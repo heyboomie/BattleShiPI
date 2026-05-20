@@ -19,14 +19,39 @@ class Server:
       open = 1
       port = randint(49152,65535)
       #dynamic ports
-      
+      #generate a random port 
       test = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
       test.settimeout(2)
       open = test.connect_ex((localIP, port))
       test.close
       #try and connect to that port and see if its open
       #connect_ex will return 0 if it connects
-
-  def boardSet(self, 
+    #once an ip and port are validated 
     
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind((localIP, port))
+    s.listen()
+    cl, addr = s.accept()
+    #then open the server and make the conncetion 
+  
+  def sendBoard(self, boatMap):
+    #send the boat maps over
+    packet = str(boatMap).encode()
+    #turn the boatMap into sendable data
+    cl.sendall(packet)
+    #send that data to the client
+    mapString = (cl.revc(1024)).decode()
+    return(mapString)
+
+  def netTurn(self, move):
+    #send the shot
+    packet = str(move).encode()
+    #turn the shot location into sendable data
+    cl.sendall(packet)
+
+    incoming = ((cl.revc(1024)).decode()
+    return(incoming)
+
+  
+
       
