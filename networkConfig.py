@@ -26,5 +26,7 @@ class Server:
       test.close
       #try and connect to that port and see if its open
       #connect_ex will return 0 if it connects
+
+  def boardSet(self, 
     
       
