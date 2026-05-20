@@ -34,7 +34,7 @@ class Server:
     cl, addr = s.accept()
     #then open the server and make the conncetion 
   
-  def sendBoard(self, boatMap):
+  def tmBoard(self, boatMap):
     #send the boat maps over
     packet = str(boatMap).encode()
     #turn the boatMap into sendable data
@@ -43,7 +43,7 @@ class Server:
     mapString = (cl.revc(1024)).decode()
     return(mapString)
 
-  def netTurn(self, move):
+  def tmTurn(self, move):
     #send the shot
     packet = str(move).encode()
     #turn the shot location into sendable data
