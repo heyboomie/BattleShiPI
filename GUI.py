@@ -28,6 +28,7 @@ def close(w):
 def boardDraw(map, boats,w):
 
     topLeftX, topLeftY = 190, 85
+    #topleft of this tile is (160, 55)
     #topleft most tile position
     waterMap = []
     markMap = []
