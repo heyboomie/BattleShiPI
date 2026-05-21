@@ -48,7 +48,15 @@ def boardDraw(map, boats,w):
                 for u in range(len(boats)):
                     for v in range(len(boats[u])):
                         if (str(i)+str(j)) == str(boats[u][v]):
-                            image = boatName.get(u) + str(v) +".gif"
+                            for w in range(len(boatMap)):
+                                direction = abs(int(boatMap[w][1]) - int(boatMap[w][0]))
+                                if direction == 10:
+                                    header = "u"
+                                else:
+                                    header = "h"
+                             #+1 is E, -1 is W, +10 N, -10S 
+                                #check which image set you use
+                            image = header + boatName.get(u) + str(v) +".gif"
                             mark = Image(Point((topLeftX + 61*j), (topLeftY + 61*i)), image)
                             mark.draw(w)
                             markMap.append(map)
