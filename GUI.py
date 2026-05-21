@@ -48,7 +48,7 @@ def boardDraw(map, boats,w):
                 for u in range(len(boats)):
                     for v in range(len(boats[u])):
                         if (str(i)+str(j)) == str(boats[u][v]):
-                            image = boatName.get(u) + str(v) +".png"
+                            image = boatName.get(u) + str(v) +".gif"
                             mark = Image(Point((topLeftX + 61*j), (topLeftY + 61*i)), image)
                             mark.draw(w)
                             markMap.append(map)
