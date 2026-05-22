@@ -31,12 +31,12 @@ class Server:
        
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((localIP, port))
-        s.listen()
+        s.listen(1)
         cl, addr = s.accept()
         print("Connected to ", addr)
         return(cl)
-    except:
-       print("An error with the connection has occured. Please check your connection then try again")
+    except Exception as e:
+       print("An error with the connection has occured. Please check your connection then try again. Error code:" , e)
        sys.end(0)
        
     #then open the server and make the conncetion 
@@ -70,8 +70,8 @@ class Client:
         s, addr = cl.connect((ip, port))
         print("Connected to ", addr)
         return(s)
-    except:
-       print("An error with the connection has occured. Please check your connection then try again")
+    except Exception as e:
+       print("An error with the connection has occured. Please check your connection then try again. Error code:" , e)
        sys.end(0)
     
     #then open the server and make the conncetion 
