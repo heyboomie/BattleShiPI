@@ -32,6 +32,7 @@ def textFormatLrg(text, x, y, w):
     t.setTextColor(color_rgb(240,240,240))
     t.setFace("helvetica")
     t.setStyle("italic")
+    t.setStyle("bold")
     t.draw(w)
     return(t)
 
