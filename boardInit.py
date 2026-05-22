@@ -27,24 +27,24 @@ def boardInit():
 
         while not validPos:
             #do not progress until the positon has been validated
-            #A-J is the Y axis, 0-9 is the X axis
-            bow = input("Input the bow of your " + boatName.get(validShip) + ": ") #if i move to a visual approach I will use a click system which will not require this code, but for the MVP this will have to do
-            if len(bow) != 2:
-            #check the move is in a valid form to prevent trying to index a part of the string that doesnt exist
-            #also prevents like A33 or whatever
-                print("Please type moves in Letter Number from A-J, 0-9 (ex. B0, J6)")
-            elif (validLetters.get(bow[0].lower()) != None) and (validNum.get(bow[1]) != None):
+            bow = getTile(w)
+            if (validLetters.get(bow[0].lower()) != None) and (validNum.get(bow[1]) != None):
             #make sure each letter is right
                 validPos = True
-            else:
-                print("Please type moves in Letter Number from A-J, 0-9 (ex. B0, J6)")
-
+            
         while not validDir:
-            text = str(boatName.get(validShip))
-            #idk why it got mad at me for this
-            direction = input("Pick the direction you want the " + text + " to face (N, S, E, W): ").strip().lower()
+            while True:
+                text = str(boatName.get(validShip))
+                #idk why it got mad at me for this
+                direction = 0
+                if checkKey() == "r":
+                    direction += 1
+                    if direction == 4:
+                        direction = 0
+                if checkKey() == 'Return'
+                    break
             match(direction):
-                case "n": #up
+                case 0: #up
                     if validLetters.get(bow[0].lower()) >= (lengths[validShip] - 1):
                         for i in range(lengths[validShip]):
                             if (str(validLetters.get(bow[0].lower()) - i) + str(validNum.get(bow[1]))) in boatPoints:
@@ -65,7 +65,7 @@ def boardInit():
                         validDir = True
                         for i in range(lengths[validShip]):
                             boatPoints.append((str(validLetters.get(bow[0].lower()) - i) + str(validNum.get(bow[1]))))
-                case "s": #down
+                case 2: #down
                     if validLetters.get(bow[0].lower()) <= (lengths[validShip] - 1):
                         for i in range(lengths[validShip]):
                             if (str(validLetters.get(bow[0].lower()) + i) + str(validNum.get(bow[1]))) in boatPoints:
@@ -86,7 +86,7 @@ def boardInit():
                         validDir = True
                         for i in range(lengths[validShip]):
                             boatPoints.append((str(validLetters.get(bow[0].lower()) + i) + str(validNum.get(bow[1]))))
-                case "e": #right
+                case 1: #right
                     if validNum.get(bow[1]) <= (lengths[validShip] - 1):
                         for i in range(lengths[validShip]):
                             if (str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) + i)) in boatPoints:
@@ -107,7 +107,7 @@ def boardInit():
                         validDir = True
                         for i in range(lengths[validShip]):
                             boatPoints.append((str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) + i)))
-                case "w": #left
+                case 3: #left
                     if validNum.get(bow[1]) >= (lengths[validShip] - 1):
                         for i in range(lengths[validShip]):
                             if (str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) - i)) in boatPoints:
@@ -128,8 +128,7 @@ def boardInit():
                         validDir = True
                         for i in range(lengths[validShip]):
                             boatPoints.append((str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) - i)))
-                case _:
-                    print("Please pick one for the 4 Cardinal Directions N (up), S (down), E (right), W (Left)")
+                
         
         while True:
             confirm = input(("Are you okay with " + boatName.get(validShip) + " being positioned with the bow at " + bow + " with the rest of the ship facing " + compass.get(direction)) + "? (y/n):  ".strip().lower())
