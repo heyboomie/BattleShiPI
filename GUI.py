@@ -156,6 +156,15 @@ def bckgrDraw(boatMap, w):
 
     return(textMap)
 
+def boatSelect(w):
+    topLeftX, topLeftY = 155, 55
+    ptX, ptY = w.checkMouse()
+
+    ptX -= topLeftX
+    ptY -= top
+
+    if
+
 def clear(board, w):
     for tile in board:
         tile.undraw()
