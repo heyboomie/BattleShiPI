@@ -173,15 +173,26 @@ def getTile(w):
         return(Letters.get(ptY // 61) + Num.get(ptX // 61))
     
 def blueprint(bow, dir, l, prev, w):
+    Letters = {
+        0:"A", 1:"B", 2:"C", 3:"D", 4:"E", 5:"F", 6:"G", 7:"H", 8:"I", 9:"J"
+        } 
     validLetters = {
         "a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6, "h":7, "i":8, "j":9
         }
     validNum = {
         "0":0, "1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9
     }
-    dirMap = [[0, 61], [61, 0], [0, -61], [-61, 0]]
+
+    if dir > 1:
+        dir -= 2
+        if dir == 2:
+            (bow[0]) - l
+    
+    dirMap = [[0, 61], [61, 0]]
     prev.undraW()
-        topLeftX, topLeftY = 185, 85
+    topLeftX, topLeftY = 170, 60
+    bp = Rectangle(Point(topLeftX, topLeftY
+    
 
 
 def clear(board, w):
