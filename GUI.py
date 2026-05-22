@@ -26,6 +26,15 @@ def boardOrder(boatMap):
 def close(w):   
     w.close()
 
+def textFormatLrg(text, x, y, w):
+    t = Text(Point(x, y), text)
+    t.setSize(50)
+    t.setTextColor(color_rgb(240,240,240))
+    t.setFace("helvetica")
+    t.setStyle("italic")
+    t.draw(w)
+    return(t)
+
 def textFormatMed(text, x, y, w):
     t = Text(Point(x, y), text)
     t.setSize(25)
