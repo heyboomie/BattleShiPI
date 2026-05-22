@@ -172,7 +172,10 @@ def getTile(w):
     if (ptY // 61 in range (10)) and (ptx // 61 in range (10)):
         return(Letters.get(ptY // 61) + Num.get(ptX // 61))
     
-    
+def blueprint(bow, dir, l, prev, w):
+    dirMap = [[0, 61], [61, 0], [0, -61], [-61, 0]]
+    prev.undraW()
+        topLeftX, topLeftY = 185, 85
 
 
 def clear(board, w):
