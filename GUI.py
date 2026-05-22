@@ -167,25 +167,23 @@ def getTile(w):
         return(str(ptY // 61) + str(ptX // 61))
     
 def blueprint(bow, dir, l, prev, w):
-    Letters = {
-        0:"A", 1:"B", 2:"C", 3:"D", 4:"E", 5:"F", 6:"G", 7:"H", 8:"I", 9:"J"
-        } 
-    validLetters = {
-        "a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6, "h":7, "i":8, "j":9
-        }
-    validNum = {
-        "0":0, "1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9
-    }
-
+    difBlue = color_rgb(135,175,255)
+    white = color_rgb(240, 240, 240)
     if dir > 1:
         dir -= 2
         if dir == 2:
-            (bow[0]) - l
+            (bow[0]) -= l
+        elif dir == 3:
+            bow[1] -= l
     
     dirMap = [[0, 61], [61, 0]]
     prev.undraW()
-    topLeftX, topLeftY = 170, 60
-    bp = Rectangle(Point(topLeftX, topLeftY
+    topLeftX, topLeftY = 185, 75 #might be wrong
+    bp = Rectangle(Point(topLeftX - 15, topLeftY - 15), Point(topLeftX + 15 + l*(dirMap[dir][0]), topLeftY + 15 + l*(dirMap[dir][0])))
+    bp.setFill(difBlue)
+    bp.setOutline(white)
+    bp.draw(w)
+    return(bp)
     
 
 
