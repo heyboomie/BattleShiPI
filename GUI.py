@@ -170,17 +170,19 @@ def getTile(w):
 def blueprint(bow, dir, l, prev, w):
     difBlue = color_rgb(135,175,255)
     white = color_rgb(240, 240, 240)
+    X = int(bow[1])
+    Y = int(bow[0])
     if dir > 1:
-        dir -= 2
         if dir == 2:
-            (bow[0]) -= l
+            Y = int(bow[0]) - int(l)
         elif dir == 3:
-            bow[1] -= l
+            X = int(bow[1]) - int(l)
+        dir -= 2
     
-    dirMap = [[0, 61], [61, 0]]
-    prev.undraW()
+    dirMap = [[0, -61], [61, 0]]
+    prev.undraw()
     topLeftX, topLeftY = 185, 75 #might be wrong
-    bp = Rectangle(Point(topLeftX - 15, topLeftY - 15), Point(topLeftX + 15 + l*(dirMap[dir][0]), topLeftY + 15 + l*(dirMap[dir][0])))
+    bp = Rectangle(Point(topLeftX - 15 + 61*X, topLeftY - 15 + 61*Y), Point((topLeftX + 15 + l*(dirMap[dir][0]) + 61*X), (topLeftY + 15 + l*(dirMap[dir][1]) + 61*Y)))
     bp.setFill(difBlue)
     bp.setOutline(white)
     bp.draw(w)
