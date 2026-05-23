@@ -50,12 +50,13 @@ class Server:
     mapString = (cl.revc(1024)).decode()
     return(mapString)
 
-  def tmTurn(self, move, cl):
+  def tmTurn(self, move:
     #send the shot
     packet = str(move).encode()
     #turn the shot location into sendable data
     cl.sendall(packet)
 
+  def rcTurn(self)
     incoming = (cl.revc(1024)).decode()
     return(incoming)
 
@@ -76,7 +77,7 @@ class Client:
     
     #then open the server and make the conncetion 
   
-  def tmBoard(self, boatMap, s):
+  def tmBoard(self, boatMap):
     #send the boat maps over
     packet = str(boatMap).encode()
     #turn the boatMap into sendable data
@@ -85,11 +86,12 @@ class Client:
     mapString = (s.revc(1024)).decode()
     return(mapString)
 
-  def tmTurn(self, move, s):
+  def tmTurn(self, move):
     #send the shot
     packet = str(move).encode()
     #turn the shot location into sendable data
     s.sendall(packet)
-
+    
+  def rcTurh(self):
     incoming = (s.revc(1024)).decode()
     return(incoming)
