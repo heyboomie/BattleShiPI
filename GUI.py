@@ -2,11 +2,11 @@ from graphics import *
 import os
 from time import sleep, time
 
-def screenInit(mode):
+def screenInit():
 
-    window = "BattleShiPI " + mode
+    window =  + mode
     #name the window to the right name
-    w = GraphWin(window, 1280, 720)
+    w = GraphWin("BattleShiPI", 1280, 720)
     #HD screen baby
     w.setBackground(color_rgb(30,53,175))
     folder = os.path.dirname(os.path.abspath(__file__))
