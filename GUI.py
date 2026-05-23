@@ -158,13 +158,13 @@ def bckgrDraw(boatMap, w):
     return(textMap)
 
 def getTile(w):
-    
+    rng = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
     topLeftX, topLeftY = 155, 55
     ptX, ptY = w.checkMouse()
     ptX -= topLeftX
     ptY -= top
 
-    if (ptY // 61 in range (10)) and (ptx // 61 in range (10)):
+    if (ptY // 61 in rng == True) and (ptx // 61 in rng == True):
         return(str(ptY // 61) + str(ptX // 61))
     
 def blueprint(bow, dir, l, prev, w):
