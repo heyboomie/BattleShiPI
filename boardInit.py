@@ -1,4 +1,4 @@
-def boardInit():
+def boardInit(w):
     
     validShip = 0
     validPos = False
@@ -27,19 +27,22 @@ def boardInit():
 
         while not validPos:
             #do not progress until the positon has been validated
+            bow = ''
             bow = getTile(w)
-            if (validLetters.get(bow[0].lower()) != None) and (validNum.get(bow[1]) != None):
+            if bow != None
             #make sure each letter is right
                 validPos = True
-            
+        prev = None
+        #this may break it im not sure?
         while not validDir:
             text = str(boatName.get(validShip))
             #idk why it got mad at me for this
             direction = 0
             if checkKey() == "r":
                 direction += 1
-            if direction == 4:
-                direction = 0
+                if direction == 4:
+                    direction = 0
+                prev = blueprint(bow, direction, lengths[validship], prev, w)
             if checkKey() == 'Return'
                 match(direction):
                     case 0: #up
