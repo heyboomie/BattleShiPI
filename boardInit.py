@@ -22,135 +22,148 @@ def boardInit(w):
         "n":"North", "s":"South", "e":"East", "w":"West"
     }
     #probably an easier way but whatever
+
+    direction = 0
     
     while validShip < 5:
 
-        while not validPos:
-            #do not progress until the positon has been validated
-            bow = ''
-            bow = getTile(w)
-            if bow != None
+        #do not progress until the positon has been validated
+        bow = None
+        bow = getTile(w)
+        if bow != None
             #make sure each letter is right
                 validPos = True
         prev = None
         #this may break it im not sure?
-        while not validDir:
-            text = str(boatName.get(validShip))
-            #idk why it got mad at me for this
-            direction = 0
-            if checkKey() == "r":
-                direction += 1
-                if direction == 4:
-                    direction = 0
-                prev = blueprint(bow, direction, lengths[validship], prev, w)
-            if checkKey() == 'Return'
-                match(direction):
-                    case 0: #up
-                        if validLetters.get(bow[0].lower()) >= (lengths[validShip] - 1):
-                            for i in range(lengths[validShip]):
-                                if (str(validLetters.get(bow[0].lower()) - i) + str(validNum.get(bow[1]))) in boatPoints:
-                                    print("Boat overlap detected, please pick a new spot")
-                                    validPos = False
-                                    validDir = True
-                                    validShip -= 1
-                                    break
+        text = str(boatName.get(validShip))
+        #idk why it got mad at me for this
+        if checkKey() == "r":
+            direction += 1
+            if direction == 4:
+                direction = 0
+            prev = blueprint(bow, direction, lengths[validship], prev, w)
+        if checkKey() == 'Return' and validPos == True:
+            match(direction):
+                case 0: #up
+                    if validLetters.get(bow[0].lower()) >= (lengths[validShip] - 1):
+                        for i in range(lengths[validShip]):
+                            if (str(validLetters.get(bow[0].lower()) - i) + str(validNum.get(bow[1]))) in boatPoints:
+                                print("Boat overlap detected, please pick a new spot")
+                                validPos = False
+                                validDir = True
+                                validShip -= 1
+                                break
                                     #this looks stupid but it does manage to skip everything and restart the loop
-                        else:
-                            print(boatName.get(validShip) +" outside of game board.")
-                            validPos = False
-                            validDir = False
-                            validShip -= 1
-                            break
+                    else:
+                        print(boatName.get(validShip) +" outside of game board.")
+                        validPos = False
+                        validDir = False
+                        validShip -= 1
+                        break
 
-                        if validPos == True:
-                            validDir = True
-                            for i in range(lengths[validShip]):
-                                boatPoints.append((str(validLetters.get(bow[0].lower()) - i) + str(validNum.get(bow[1]))))
-                    case 2: #down
-                        if validLetters.get(bow[0].lower()) <= (lengths[validShip] - 1):
-                            for i in range(lengths[validShip]):
-                                if (str(validLetters.get(bow[0].lower()) + i) + str(validNum.get(bow[1]))) in boatPoints:
-                                    print("Boat overlap detected, please pick a new spot")
-                                    validPos = False
-                                    validDir = True
-                                    validShip -= 1
-                                    break
-                                #this looks stupid but it does manage to skip everything and restart the loop
-                        else:
-                            print(boatName.get(validShip) +" outside of game board.")
-                            validPos = False
-                            validDir = False
-                            validShip -= 1
-                            break
-
-                        if validPos == True:
-                            validDir = True
-                            for i in range(lengths[validShip]):
-                                boatPoints.append((str(validLetters.get(bow[0].lower()) + i) + str(validNum.get(bow[1]))))
-                    case 1: #right
-                        if validNum.get(bow[1]) <= (lengths[validShip] - 1):
-                            for i in range(lengths[validShip]):
-                                if (str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) + i)) in boatPoints:
-                                    print("Boat overlap detected, please pick a new spot")
-                                    validPos = False
-                                    validDir = True
-                                    validShip -= 1
-                                    break
-                                #this looks stupid but it does manage to skip everything and restart the loop
-                        else:
-                            print(boatName.get(validShip) +" outside of game board.")
-                            validPos = False
-                            validDir = False
-                            validShip -= 1
-                            break
-
-                        if validPos == True:
-                            validDir = True
-                            for i in range(lengths[validShip]):
-                                boatPoints.append((str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) + i)))
-                    case 3: #left
-                        if validNum.get(bow[1]) >= (lengths[validShip] - 1):
-                            for i in range(lengths[validShip]):
-                                if (str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) - i)) in boatPoints:
-                                    print("Boat overlap detected, please pick a new spot")
-                                    validPos = False
-                                    validDir = True
-                                    validShip -= 1
-                                    break
-                                #this looks stupid but it does manage to skip everything and restart the loop
-                        else:
-                            print(boatName.get(validShip) +" outside of game board.")
-                            validPos = False
-                            validDir = False
-                            validShip -= 1
-                            break
-
-                        if validPos == True:
-                            validDir = True
-                            for i in range(lengths[validShip]):
-                                boatPoints.append((str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) - i)))
-                
+                    if validPos == True:
+                        validDir = True
+                        for i in range(lengths[validShip]):
+                            boatPoints.append((str(validLetters.get(bow[0].lower()) - i) + str(validNum.get(bow[1]))))
+                        validShip += 1
+                        validPos = False
+                        validDir = False
+                        #reset for next loop
         
-        while True:
-            confirm = input(("Are you okay with " + boatName.get(validShip) + " being positioned with the bow at " + bow + " with the rest of the ship facing " + compass.get(direction)) + "? (y/n):  ".strip().lower())
-            match(confirm):
-                case 'y':
-                    print("Continuing")
-                    break
-                case 'n':
-                    print("Clearing")
-                    print(validShip)
-                    del boatPoints[-((lengths[validShip])):]
-                    print(boatPoints)
-                    validShip -= 1
-                    break
-                case _:
-                    print("either y or n")
+                case 2: #down
+                    if validLetters.get(bow[0].lower()) <= (lengths[validShip] - 1):
+                        for i in range(lengths[validShip]):
+                            if (str(validLetters.get(bow[0].lower()) + i) + str(validNum.get(bow[1]))) in boatPoints:
+                                print("Boat overlap detected, please pick a new spot")
+                                validPos = False
+                                validDir = True
+                                validShip -= 1
+                                break
+                                #this looks stupid but it does manage to skip everything and restart the loop
+                    else:
+                        print(boatName.get(validShip) +" outside of game board.")
+                        validPos = False
+                        validDir = False
+                        validShip -= 1
+                        break
+                        
+                    if validPos == True:
+                        validDir = True
+                        for i in range(lengths[validShip]):
+                            boatPoints.append((str(validLetters.get(bow[0].lower()) + i) + str(validNum.get(bow[1]))))
+                        validShip += 1
+                        validPos = False
+                        validDir = False
+                        #reset for next loop
+                case 1: #right
+                    if validNum.get(bow[1]) <= (lengths[validShip] - 1):
+                        for i in range(lengths[validShip]):
+                            if (str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) + i)) in boatPoints:
+                                print("Boat overlap detected, please pick a new spot")
+                                validPos = False
+                                validDir = True
+                                validShip -= 1
+                                break
+                                #this looks stupid but it does manage to skip everything and restart the loop
+                    else:
+                        print(boatName.get(validShip) +" outside of game board.")
+                        validPos = False
+                        validDir = False
+                        validShip -= 1
+                        break
+
+                    if validPos == True:
+                        validDir = True
+                        for i in range(lengths[validShip]):
+                            boatPoints.append((str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) + i)))
+                        validShip += 1
+                        validPos = False
+                        validDir = False
+                        #reset for next loop
+                case 3: #left
+                    if validNum.get(bow[1]) >= (lengths[validShip] - 1):
+                        for i in range(lengths[validShip]):
+                            if (str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) - i)) in boatPoints:
+                                print("Boat overlap detected, please pick a new spot")
+                                validPos = False
+                                validDir = True
+                                validShip -= 1
+                                break
+                                #this looks stupid but it does manage to skip everything and restart the loop
+                    else:
+                        print(boatName.get(validShip) +" outside of game board.")
+                        validPos = False
+                        validDir = False
+                        validShip -= 1
+                        break
+
+                    if validPos == True:
+                        validDir = True
+                        for i in range(lengths[validShip]):
+                            boatPoints.append((str(validLetters.get(bow[0].lower())) + str(validNum.get(bow[1]) - i)))
+                        validShip += 1
+                        validPos = False
+                        validDir = False
+                        #reset for next loop
+               
         
-        validShip += 1
-        validPos = False
-        validDir = False
-        #reset for next loop
+        # while True:
+        #     confirm = input(("Are you okay with " + boatName.get(validShip) + " being positioned with the bow at " + bow + " with the rest of the ship facing " + compass.get(direction)) + "? (y/n):  ".strip().lower())
+        #     match(confirm):
+        #         case 'y':
+        #             print("Continuing")
+        #             break
+        #         case 'n':
+        #             print("Clearing")
+        #             print(validShip)
+        #             del boatPoints[-((lengths[validShip])):]
+        #             print(boatPoints)
+        #             validShip -= 1
+        #             break
+        #         case _:
+        #             print("either y or n")
+        
+        
 
     for i in range(len(boatPoints)):
             boatMap += boatPoints[i]
