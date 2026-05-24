@@ -4,12 +4,12 @@ from time import sleep, time
 
 def screenInit():
 
-    window =  + mode
+    window = "BattleShiPI "
     #name the window to the right name
-    w = GraphWin("BattleShiPI", 1280, 720)
+    w = GraphWin(window, 1280, 720)
     #HD screen baby
     w.setBackground(color_rgb(30,53,175))
-    folder = os.path.dirname(os.path.abspath(__file__))
+    folder = os.path.dirname(os.path.abspath(__file__)) + "\img"
     os.chdir(folder)
     #make sure the images load
 
