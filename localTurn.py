@@ -1,4 +1,5 @@
 def localTurn(localBoard, boatBoard):
+
     #Takes in the current board, and boat coordiantes
     #Outputs the last move, the local board, and if a win is set
 
@@ -66,9 +67,9 @@ def localTurn(localBoard, boatBoard):
                 for l in range(len(boatBoard[i])):
                     #again go to each segment of the destroyed boat and turn it into a destroyed tile so its not retriggered
                     localBoard[int(boatBoard[i][l][0])][int(boatBoard[i][l][1])] = 4
+    k = 0
     for i in range(5):
-        #check all 5 boats
-        k = 0
+        #check all 5 boats   
         #damaged segment counter
         for j in range(len(boatBoard[i])):
             #check each segment of each boat
@@ -82,3 +83,45 @@ def localTurn(localBoard, boatBoard):
         print(localBoard[i])
     #print board for testing purposes
     return(coordinate, localBoard, False)
+
+def AwayTurn(localBoard, boatBoard, inc):
+    boatName = {
+        0:"Aircraft Carrier", 1:"Battleship", 2:"Cruiser", 3:"Submarine", 4:"Destroyer"
+    }
+    loss = False
+    if localBoard[str(inc[0])][str(inc[1])] == 1:
+        localBoard[str(inc[0])][str(inc[1])] = 3
+    elif localBoard[str(inc[0])][str(inc[1])] == 0:
+        localBoard[str(inc[0])][str(inc[1])] = 2
+    else:
+        print("Error: Mismatched Gamestate, please restart your game")
+
+    for i in range(5):
+        #check all 5 boats
+        k = 0
+        #damaged segment counter
+        for j in range(len(boatBoard[i])):
+            #check each segment of each boat
+            if localBoard[int(boatBoard[i][j][0])][int(boatBoard[i][j][1])] == 3:
+                k += 1
+                #inc damaged segment counter if a segment is damaged
+            if k == len(boatBoard[i]):
+                #if all segments in a given boat are destroyed put the message out
+                print("Your ", boatName.get(i), " has been destroyed")
+                #figure out how to write text to the screen then do that
+                for l in range(len(boatBoard[i])):
+                    #again go to each segment of the destroyed boat and turn it into a destroyed tile so its not retriggered
+                    localBoard[int(boatBoard[i][l][0])][int(boatBoard[i][l][1])] = 4
+    k = 0
+    for i in range(5):
+        #check all 5 boats   
+        #damaged segment counter
+        for j in range(len(boatBoard[i])):
+            #check each segment of each boat
+            if localBoard[int(boatBoard[i][j][0])][int(boatBoard[i][j][1])] == 4:
+                k += 1
+            if k == 17:
+                print("You win!")
+                loss = True
+                #yay!
+    return(localBoard, loss)
