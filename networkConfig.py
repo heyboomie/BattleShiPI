@@ -25,7 +25,7 @@ class Server:
       #once an ip and port are validated 
     
     #then open the server and make the conncetion 
-  def create():
+  def create(self):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((self.localIP, self.port))
