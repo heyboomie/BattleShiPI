@@ -114,6 +114,14 @@ def modeSelect(w):
     clear(screen)
     return(mode)
 
+def showIP(IP, Host, w):
+    return(textFormatLrg("IP :" + IP + " Host: " + Host, 1280/2, 720/2, w))
+
+def inputIP(w):
+    width = 125 #+/-
+    height = 25 #+/-
+    ipRect = Rectangle(Point(720-width, 300-height), Point(720+width, 300 + height)) 
+
 def boardDraw(map,w):
 
     topLeftX, topLeftY = 185, 85
