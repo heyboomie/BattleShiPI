@@ -118,10 +118,36 @@ def showIP(IP, Host, w):
     return(textFormatLrg("IP :" + IP + " Host: " + Host, 1280/2, 720/2, w))
 
 def inputIP(w):
+    boxes = []
+    
     width = 125 #+/-
     height = 25 #+/-
-    ipRect = Rectangle(Point(720-width, 300-height), Point(720+width, 300 + height)) 
-
+    ipRect = Rectangle(Point(640-width, 300-height), Point(640+width, 300 + height))
+    ipRect.setFill(color_rgb(0,0,0))
+    ipRect.draw(w)
+    boxes.append(ipRect)
+    ipEntry = Entry(Point(640,300), 15)
+    ipEntry.setSize(36)
+    ipEntry.setTextColor(color_rgb(240,240,240))
+    ipEntry.setText("Ip Addr")
+    ipEntry.draw(w)
+    boxes.append(ipEntry)
+    
+    portRect = Rectangle(Point(640-width, 420-height), Point(640+width, 420 + height))
+    portRect.setFill(color_rgb(0,0,0))
+    portRect.draw(w)
+    boxes.append(portRect)
+    portEntry = Entry(Point(640,420), 15)
+    portEntry.setSize(36)
+    portEntry.setTextColor(color_rgb(240,240,240))
+    portEntry.setText("Port #")
+    portEntry.draw(W)
+    boxes.append(portEntry)
+    
+    while True:
+        if w.getKey == "Return"
+            return(ipEntry.getText(), portEntry.getText(), boxes)
+        
 def boardDraw(map,w):
 
     topLeftX, topLeftY = 185, 85
