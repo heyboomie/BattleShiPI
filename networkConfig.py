@@ -36,6 +36,9 @@ class Server:
        sys.exit(0)
        
     #then open the server and make the conncetion 
+
+  def ownName(self):
+    return(self.localIP, self.port)
   
   def pairName(self):
     return(self.addr)
