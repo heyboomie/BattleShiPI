@@ -2,6 +2,8 @@ from graphics import *
 import os
 from time import sleep, time
 
+#if i made this all a class it would have been a lottt nicer, however its kinda too late for that
+
 def screenInit():
 
     window = "BattleShiPI "
@@ -14,6 +16,32 @@ def screenInit():
     #make sure the images load
 
     return(w)
+
+def clear(board):
+    for tile in board:
+        tile.undraw()
+
+def messageBoard(text, w, prev):
+    clear(prev)
+    lst = []
+    board = Rectangle(Point(1020, 440), Point(1260, 514))
+    board.setWidth(10)
+    board.setFill(color_rgb(0,0,0))
+    board.setOutline(color_rgb(75,85,180))
+    board.draw(w)
+    lst.append(board)
+    if len(text) < 29:
+        t = textFormatSml(text, 1140, 477, w)
+        lst.append(t)
+    else:
+        t1 = text[:len(text) // 2]
+        t2 = text[len(text) // 2:]
+        tobj1 = textFormatSml(t1, 1140, 467, w)
+        tobj2 = textFormatSml(t2, 1140, 487, w)
+        lst.append(tobj1)
+        lst.append(tobj2)
+    
+    return(lst)
 
 def boardOrder(boatMap):
     for i in range(len(boatMap)):
@@ -28,7 +56,7 @@ def close(w):
 
 def textFormatLrg(text, x, y, w):
     t = Text(Point(x, y), text)
-    t.setSize(50)
+    t.setSize(36)
     t.setTextColor(color_rgb(240,240,240))
     t.setFace("helvetica")
     t.setStyle("italic")
@@ -54,38 +82,47 @@ def textFormatSml(text, x, y, w):
     t.draw(w)
     return(t)
 
+def modeSelect(w):
+    screen = []
+    t = textFormatLrg("Please select if your RPi is acting as the: ", 640, 240, w)
+    screen.append(t)
+    b1 = Rectangle(Point(400-100, 300), Point(400+100, 400))
+    b1.setWidth(10)
+    b1.setFill(color_rgb(0,0,0))
+    b1.setOutline(color_rgb(75,85,180))
+    b1.draw(w)
+    screen.append(b1)
+    b2 = Rectangle(Point(880-100, 300), Point(880+100, 400))
+    b2.setWidth(10)
+    b2.setFill(color_rgb(0,0,0))
+    b2.setOutline(color_rgb(75,85,180))
+    b2.draw(w)
+    screen.append(b2)
+    t1 = textFormatLrg("Host", 400, 350, w)
+    screen.append(t1)
+    t2 = textFormatLrg("Client", 880, 350, w)
+    screen.append(t2)
+    mode = None
+    while mode == None:
+        click = w.getMouse()
+        print(click)
+        if (click.getX() > 400-100) and (click.getX() < 400+100) and (click.getY() > 300) and (click.getY() < 400):
+            mode = 0
+        elif (click.getX() > 880-100) and (click.getX() < 880+100) and (click.getY() > 300) and (click.getY() < 400):
+            mode = 1
+        print(mode)
+    clear(screen)
+    return(mode)
+
 def boardDraw(map,w):
 
     topLeftX, topLeftY = 185, 85
     #topleft of this tile is (160, 55)
     #topleft most tile position
     imageMap = []
-    boatName = {
-        0:"Carrier", 1:"Battle", 2:"Cruiser", 3:"Sub", 4:"Destroyer"
-    }
     common = ["Water.gif", "Water.gif", "Miss.gif", "Hit.gif", "Hit.gif"]
     for i in range(len(map)):
         for j in range(len(map[i])):
-            #if map[i][j] == 4:    
-            #    for u in range(len(boats)):
-            #        for v in range(len(boats[u])):
-            #            if (str(i)+str(j)) == str(boats[u][v]):
-            #                for x in range(len(boats)):
-            #                    direction = abs(int(boats[x][1]) - int(boats[x][0]))
-            #                    if direction == 10:
-            #                       header = "u"
-            #                    else:
-            #                        header = "h"
-                             #+1 is E, -1 is W, +10 N, -10S 
-                                #check which image set you use
-                            #image = header + boatName.get(u) + str(v) +".gif"q
-                            #uncomment when files updated
-            #                image = boatName.get(u) + str(v) +".gif"
-                            #use this for testing
-            #               mark = Image(Point((topLeftX + 61*j), (topLeftY + 61*i)), image)
-            #                mark.draw(w)
-            #                imageMap.append(mark)
-            
             tile = Image(Point((topLeftX + 61*j), (topLeftY + 61*i)), common[map[i][j]])
             tile.draw(w)
             imageMap.append(tile) 
@@ -94,15 +131,19 @@ def boardDraw(map,w):
     #     
     return(imageMap)
      
-def boatVitals(boats, w):
+def boatVitals(boatBoard, localBoard, w):
     boatX, boatY = 900, 115
     boatName = {
         0:"Carrier", 1:"Battle", 2:"Cruiser", 3:"Sub", 4:"Destroyer"
     }
     lst = []
-    for i in range(len(boats)):
-        for j in range(len(boats[i])):
-            if boats[i][j] == 1:
+    for i in range(5):
+        #check all 5 boats
+        k = 0
+        #damaged segment counter
+        for j in range(len(boatBoard[i])):
+            #check each segment of each boat
+            if localBoard[int(boatBoard[i][j][0])][int(boatBoard[i][j][1])] >= 3:
                 pre = "d"
             else:
                 pre = ''
@@ -157,47 +198,51 @@ def bckgrDraw(boatMap, w):
 
     return(textMap)
 
-def getTile(w):
-    rng = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    topLeftX, topLeftY = 155, 55
-    ptX, ptY = w.checkMouse()
-    ptX -= topLeftX
-    ptY -= top
-
-    if (ptY // 61 in rng == True) and (ptx // 61 in rng == True):
-        return(str(ptY // 61) + str(ptX // 61))
-    
 def blueprint(bow, dir, l, prev, w):
     difBlue = color_rgb(135,175,255)
     white = color_rgb(240, 240, 240)
+    bow = str(bow)
     X = int(bow[1])
     Y = int(bow[0])
     if dir > 1:
         if dir == 2:
-            Y = int(bow[0]) - int(l)
+            Y = int(bow[0]) + int((l)) - 1
         elif dir == 3:
-            X = int(bow[1]) - int(l)
+            X = int(bow[1]) - int((l)) + 1
         dir -= 2
     
     dirMap = [[0, -61], [61, 0]]
-    prev.undraw()
-    topLeftX, topLeftY = 185, 75 #might be wrong
-    bp = Rectangle(Point(topLeftX - 15 + 61*X, topLeftY - 15 + 61*Y), Point((topLeftX + 15 + l*(dirMap[dir][0]) + 61*X), (topLeftY + 15 + l*(dirMap[dir][1]) + 61*Y)))
+    clear(prev)
+    topLeftX, topLeftY = 190, 85 #might be wrong
+    bp = Rectangle(Point(topLeftX - 15 + 61*X, topLeftY + 15 + 61*Y), Point((topLeftX + 15 + (l-1)*(dirMap[dir][0]) + 61*X), (topLeftY - 15 + (l-1)*(dirMap[dir][1]) + 61*Y)))
     bp.setFill(difBlue)
     bp.setOutline(white)
     bp.draw(w)
     return(bp)
-    
 
+def getTile(w):
+    tlX = 160
+    tlY = 55
+    tl = w.getMouse()
+    if tl != None:
+        if (tl.getX() > tlX) and (tl.getX() < tlX + 610) and (tl.getY() > tlY) and (tl.getY() < tlY + 610):
+            tile = (str((tl.getY() - tlY) // 61)[0] + str((tl.getX() - tlX) // 61)[0])
+            return(tile)
 
-def clear(board, w):
-    for tile in board:
-        tile.undraw()
-
-#temp test code
-w = screenInit("Host")
+def boatPlace(pos, points, w):
+    clear(pos)
+    lst = []
+    boatX, boatY = 190, 85
+    for i in range(len(points)):
+        gear = Image(Point(boatX + 61*int(points[i][1]), boatY + 61*int(points[i][0])), "building.gif")
+        gear.draw(w)
+        lst.append(gear)
+    return(lst)
+# temp test code
+# w = screenInit()
+# boatMap = []
 # boatMap = boardOrder((['00', '01', '02', '03', '04'], ['10', '11', '12', '13'], ['22', '21', '20'], ['30', '31', '32'], ['41', '40']))
-# boatHealth = [[0,0,0,0,0],[1,1,1,1],[0,0,0],[0,0,0],[0,0]]
+# # boatHealth = [[0,0,0,0,0],[1,1,1,1],[0,0,0],[0,0,0],[0,0]]
 # board = [] #keep track of the board objects so we can delete them later
 # team = []
 # text = []
@@ -205,26 +250,40 @@ w = screenInit("Host")
 # print(os.getcwd())
 # text = text + (bckgrDraw(boatMap, w))
 # board = board + (boardDraw(([4, 4, 4, 4, 4, 0, 0, 0, 0, 0], [4, 4, 4, 4, 0, 0, 0, 0, 0, 0], [4, 4, 4, 0, 0, 0, 0, 0, 0, 0], [4, 4, 4, 0, 0, 0, 0, 0, 0, 0], [4, 4, 0, 0, 0, 0, 0, 0, 0, 0], [2, 3, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), w))
-# team = team + (boatVitals(boatHealth, w))
-
+# team = team + (boatVitals(boatMap,([4, 4, 4, 4, 4, 0, 0, 0, 0, 0], [4, 4, 4, 4, 0, 0, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 0], [2, 3, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), w))
+# bp = Image(Point(910 + 61*3, 130 + 61*8), "Hit.gif")
+# bp.draw(w)
+# modeSelect(w)
+# bckgrDraw(boatMap, w)
 # while True:
-#     if w.checkKey() == "d":
-#         clear(board, w)
-#         board = []
-#         a = time()
-#         board = board + (boardDraw(([4, 4, 4, 4, 4, 0, 0, 0, 0, 0], [4, 4, 4, 4, 0, 0, 0, 0, 0, 0], [4, 4, 4, 0, 0, 0, 0, 0, 0, 0], [4, 4, 4, 0, 0, 0, 0, 0, 0, 0], [4, 4, 0, 0, 0, 0, 0, 0, 0, 0], [2, 3, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), w))
-#         print(time() - a)
-#     if w.checkKey() == "t":
-#         clear(team, w)
-#         team = []
-#         a = time()
-#         team = team + (boatVitals(boatHealth, w))
-#         print(time() - a)
-#     if w.checkKey() == "w":
-#         clear(text, w)
-#         text = []
-#         a = time()
-#         text = text + (bckgrDraw(boatMap, w))
-#         print(time() - a)
-#     if w.checkKey() == "q":
-#         close(w)
+#     getTile(w)
+    # if w.checkKey() == "d":
+
+    #      clear(board)
+    #      board = []
+    #      a = time()
+    #      board = board + (boardDraw(([4, 4, 4, 4, 4, 0, 0, 0, 0, 0], [4, 4, 4, 4, 0, 0, 0, 0, 0, 0], [4, 4, 4, 0, 0, 0, 0, 0, 0, 0], [4, 4, 4, 0, 0, 0, 0, 0, 0, 0], [4, 4, 0, 0, 0, 0, 0, 0, 0, 0], [2, 3, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), w))
+    #      print(time() - a)
+    # if w.checkKey() == "t":
+    #      clear(team)
+    #      team = []
+    #      a = time()
+    #      team = team + (boatVitals(boatMap,([4, 4, 4, 4, 4, 0, 0, 0, 0, 0], [4, 4, 4, 4, 0, 0, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 0, 0], [1, 1, 1, 0, 0, 0, 0, 0, 0, 0], [1, 1, 0, 0, 0, 0, 0, 0, 0, 0], [2, 3, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]), w))
+    #      print(time() - a)
+    # if w.checkKey() == "w":
+    #      clear(text)
+    #      text = []
+    #      a = time()
+    #      text = text + (bckgrDraw(boatMap, w))
+    #      b, t = messageBoard("You have destroyed the enemy Aircraft Carrier", w)
+    #      text.append(t)
+    #      board.append(b)
+    #      print(time() - a)
+    # if w.checkKey() == "b":
+    #     a = time()
+    #     bp = blueprint("05", 3, 5, bp, w)
+    #     print(time() - a)
+    #     hit = textFormatLrg("A10", 910 + 61*3, 130 + 61*8, w)
+#     #messageBoard("a", w)
+    # if w.checkKey() == "q":
+    #     close(w)
