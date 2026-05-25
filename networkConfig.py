@@ -23,11 +23,13 @@ class Server:
       #try and connect to that port and see if its open
       #connect_ex will return 0 if it connects
       #once an ip and port are validated 
+    
+    #then open the server and make the conncetion 
+  def create():
     try:
-       
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.bind(('', self.port))
-        s.listen()
+        s.bind((self.localIP, self.port))
+        s.listen(1)
         self.cl, self.addr = s.accept()
         print("Connected to", self.addr)
 
@@ -35,8 +37,6 @@ class Server:
        print("An error with the connection has occured. Please check your connection then try again: ", e)
        sys.exit(0)
        
-    #then open the server and make the conncetion 
-
   def ownName(self):
     return(self.localIP, self.port)
   
