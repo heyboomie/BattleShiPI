@@ -9,9 +9,13 @@ def setup(): #sets up the game window and server connection
         mode = GUI.modeSelect(w)
         if mode == 0: #server
             me = networkConfig.Server()
+            ip, port = me.ownName()
+            info = GUI.showIP(ip, port, w)
+            me.create()
         elif mode == 1:
+            ip, port, info = GUI.inputIP(w)
             me = networkConfig.Client()
-    return(me, mode, w)
+    return(me, mode, info, w)
 
 def main():
     print("Game Start")
@@ -31,7 +35,7 @@ def main():
     boatImages = []
     textImages = []
     #gameloop
-    me, mode, w = setup()
+    me, mode, info, w = setup()
     GUI.bckgrDraw(networkShips, w)
     shipString = boardInit.boardInit(w)
     localBoard, localShips = boardInit.convert(shipString)
@@ -57,5 +61,8 @@ def main():
         localBoard, loss = localTurn.AwayTurn(localBoard, localShips, inc)
         GUI.clear(boatImages)
         boatImages = GUI.boatVitals(localBoard, localShips, w)
+
+    if won == True:
+        
 
 main()
