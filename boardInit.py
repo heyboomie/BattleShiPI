@@ -5,13 +5,6 @@ def boardInit(w):
     
     validShip = 0
     validPos = False
-    
-    validLetters = {
-        "a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6, "h":7, "i":8, "j":9
-        }
-    validNum = {
-        "0":0, "1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9
-    }
     boatName = {
         0:"Aircraft Carrier", 1:"Battleship", 2:"Cruiser", 3:"Submarine", 4:"Destroyer"
     }
@@ -37,19 +30,20 @@ def boardInit(w):
             bow = GUI.getTile(w)
             print("bing")
             prev =[GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
-        if w.checkKey() == "Escape":
+        key = w.checkKey()
+        if key == "Escape":
             bow = None
             GUI.clear(prev)
         if bow != None:
             #make sure each letter is right
                 validPos = True  
-        if w.checkKey() == "r" and bow != None:
+        if key == "r" and bow != None:
             direction += 1
             if direction == 4:
                 direction = 0
             print(bow)
             prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
-        if w.checkKey() == 'Return' and validPos == True:
+        if key == 'Return' and validPos == True:
             match(direction):
                 case 0: #up
                     if int(bow[0]) >= (lengths[validShip] - 1):
@@ -163,7 +157,7 @@ def boardInit(w):
                         GUI.clear(prev)
                         prev = []
                         #reset for next loop        
-            print(boatPoints)
+            #print(boatPoints)
     for i in range(len(boatPoints)):
             boatMap += boatPoints[i]
     GUI.clear(gears)
