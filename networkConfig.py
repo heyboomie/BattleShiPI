@@ -1,4 +1,4 @@
-import socket, os, subprocess, sys
+import socket, os, subprocess, sys, GUI
 from random import randint
 
 
@@ -64,10 +64,10 @@ class Server:
 
 class Client:
 
-  def __init__(self):
+  def __init__(ip, port, self):
     
-    ip = input("Please input the IP address of the Host: ")
-    port = input("Please input the port of the Host: ")
+    # ip = input("Please input the IP address of the Host: ")
+    # port = input("Please input the port of the Host: ")
     try:
         cl = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s, self.addr = cl.connect((ip, port))
