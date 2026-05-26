@@ -2,7 +2,7 @@
 import boardInit, GUI, localTurn, networkConfig, time, sys
 
 def setup(): #sets up the game window and server connection
-    print("a")
+    #print("a")
     mode = None
     w = GUI.screenInit()
     while mode == None:
@@ -10,17 +10,19 @@ def setup(): #sets up the game window and server connection
         if mode == 0: #server
             me = networkConfig.Server()
             ip, port = me.ownName()
+            
             info = GUI.showIP(ip, port, w)
-            print("here")
+            #print("here")
             me.create()
         elif mode == 1:
             ip, port, info = GUI.inputIP(w)
+            #print(ip, " ", port)
             me = networkConfig.Client(str(ip), int(port))
         GUI.clear(info)
-    return(me, mode, info, w)
+    return(me, mode, w)
 
 def main():
-    print("Game Start")
+    #print("Game Start")
     #initalize variables
     move = None #where are you shooting
     inc = None #where are you being shot 
@@ -39,36 +41,61 @@ def main():
     bckgImages = []
     #gameloop
     me, mode, w = setup()
-    bckgImages = GUI.bckgrDraw(networkShips, w)
-    shipString = boardInit.boardInit(w)
-    localBoard, localShips = boardInit.convert(shipString)
-    
-    networkBoard, networkShips = boardInit.convert(me.tmBoard(shipString))
-    GUI.clear(bckgImages)
-    bckgImages = GUI.bckgrDraw(networkShips, w)
+    #sets up the game
 
+    #draw the background 
+    bckgImages = GUI.bckgrDraw(localShips, w)
+    shipString, tileImages = boardInit.boardInit(w)
+    localBoard, localShips = boardInit.convert(shipString)
+    #once the bots are selected then redraw the board to show their location
+    GUI.clear(bckgImages)
+    bckgImages = GUI.bckgrDraw(localShips, w)
+    boatImages = GUI.boatVitals(localShips, localBoard, w)
+    #exchange board info with the other player
+    networkBoard, networkShips = boardInit.convert(me.tmBoard(shipString))
+
+    #if youre a client, do an extra recieve first
     if mode == 1:
+        #where am i getting hit?
         inc = me.rcTurn()
+        #add that to the log
         hits.append(inc)
+        #game logic about getting hit
         localBoard, loss, msg = localTurn.AwayTurn(localBoard, localShips, inc, w, textImages)
+        #clear any text
         textImages = []
+        #update the text
         textImages.append(msg)
+        #clear the ships
         GUI.clear(boatImages)
+        #redraw the ships, make any updates if needed
         boatImages = GUI.boatVitals(localBoard, localShips, w)
 
-    while (not won) and (not loss):
+    while (not won) and (not loss): #if the game is neither lost nor won
+        #make ur move
         move, networkBoard, won = localTurn.localTurn(networkBoard, networkShips, textImages, w)
+        #send the shell off
         me.tmTurn(move)
+        #add that to the log
         fired.append(move)
+        #clear the board
         GUI.clear(tileImages)
+        #redraw the board with the new marker
         tileImages = GUI.boardDraw(networkBoard, w)
 
+        #where am i getting hit?
         inc = me.rcTurn()
+        #add that to the log
         hits.append(inc)
+        #game logic about getting hit
         localBoard, loss, msg = localTurn.AwayTurn(localBoard, localShips, inc, w, textImages)
+        #clear any text
         textImages = []
+        #update the text
         textImages.append(msg)
+        #clear the ships
         GUI.clear(boatImages)
+        #redraw the ships, make any updates if needed
         boatImages = GUI.boatVitals(localBoard, localShips, w)
 
     if won == True:
