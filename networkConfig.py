@@ -30,9 +30,11 @@ class Server:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.bind((self.localIP, self.port))
         s.listen(1)
+        s.settimeout(60.0)
         self.cl, self.addr = s.accept()
-        print("Connected to", self.addr)
-
+        
+        #print("Connected to", self.addr)
+        #future feature, print the address of the client under the board
     except Exception as e:
        print("An error with the connection has occured. Please check your connection then try again: ", e)
        sys.exit(0)
@@ -64,14 +66,17 @@ class Server:
 
 class Client:
 
-  def __init__(ip, port, self):
+  def __init__(self, ip, port):
     
     # ip = input("Please input the IP address of the Host: ")
     # port = input("Please input the port of the Host: ")
     try:
+        
         cl = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
         self.s, self.addr = cl.connect((ip, port))
-        print("Connected to ", self.addr)
+        cl.settimeout(60)
+        #print("Connected to ", self.addr)
     except Exception as e:
        print("An error with the connection has occured. Please check your connection then try again:", e)
        sys.exit(0)
