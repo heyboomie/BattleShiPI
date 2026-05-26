@@ -6,7 +6,7 @@ from time import sleep, time
 
 def screenInit():
 
-    window = "BattleShiPI 1.2w22"
+    window = "BattleShiPI 1.3w22"
     #name the window to the right name
     w = GraphWin(window, 1280, 720)
     #HD screen baby
@@ -105,17 +105,17 @@ def modeSelect(w):
     mode = None
     while mode == None:
         click = w.getMouse()
-        print(click)
+        #print(click)
         if (click.getX() > 400-100) and (click.getX() < 400+100) and (click.getY() > 300) and (click.getY() < 400):
             mode = 0
         elif (click.getX() > 880-100) and (click.getX() < 880+100) and (click.getY() > 300) and (click.getY() < 400):
             mode = 1
-        print(mode)
+        #print(mode)
     clear(screen)
     return(mode)
 
 def showIP(IP, Host, w):
-    return(textFormatLrg("IP :" + str(IP) + " Port: " + str(Host), 1280/2, 720/2, w))
+    return([textFormatLrg("IP :" + str(IP) + " Port: " + str(Host), 1280/2, 720/2, w)])
 
 def inputIP(w):
     boxes = []
@@ -264,6 +264,8 @@ def getTile(w):
         if (tl.getX() > tlX) and (tl.getX() < tlX + 610) and (tl.getY() > tlY) and (tl.getY() < tlY + 610):
             tile = (str((tl.getY() - tlY) // 61)[0] + str((tl.getX() - tlX) // 61)[0])
             return(tile)
+        else:
+            return(None)
 
 def boatPlace(pos, points, w):
     clear(pos)
