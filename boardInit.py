@@ -22,14 +22,15 @@ def boardInit(w):
     prev = []
     msg = []
     gears = []
-    GUI.boardDraw([[0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0]], w)
+    tiles = GUI.boardDraw([[0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0]], w)
     while validShip < 5:
         boat = str(boatName.get(validShip))
         #do not progress until the positon has been validated
         while bow == None:
             bow = GUI.getTile(w)
-            print("bing")
-            prev =[GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
+            #("bing")
+            if bow != None:
+                prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
         key = w.checkKey()
         if key == "Escape":
             bow = None
@@ -41,7 +42,7 @@ def boardInit(w):
             direction += 1
             if direction == 4:
                 direction = 0
-            print(bow)
+            #print(bow)
             prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
         if key == 'Return' and validPos == True:
             match(direction):
@@ -60,6 +61,7 @@ def boardInit(w):
                         validPos = False
                         bow = None
 
+
                     if validPos == True:
                         
                         for i in range(lengths[validShip]):
@@ -69,17 +71,17 @@ def boardInit(w):
                         bow = None
                         msg = GUI.messageBoard(boat +" placed successfully", w, msg)
                         gears = GUI.boatPlace(gears, boatPoints, w)
-                        GUI.clear(prev)
-                        prev = []
+
+
                         #reset for next loop
                 case 2: #down
-                    if int(bow[0]) <= (lengths[validShip] - 1):
+                    if int(bow[0]) <= (10 - lengths[validShip]):
                         for i in range(lengths[validShip]):
                             if (str(int(bow[0]) + i)) + str(bow[1]) in boatPoints:
                                 GUI.clear(msg)
                                 msg = GUI.messageBoard("Boat overlap detected, please pick a new spot", w, msg)
                                 validPos = False
-                                
+
 
                                 #this looks stupid but it does manage to skip everything and restart the loop
                     else:
@@ -89,7 +91,6 @@ def boardInit(w):
                         validPos = False
                         bow = None
 
-                        
                     if validPos == True:
                         
                         for i in range(lengths[validShip]):
@@ -99,17 +100,17 @@ def boardInit(w):
                         bow = None
                         msg = GUI.messageBoard(boat +" placed successfully", w, msg)
                         gears = GUI.boatPlace(gears, boatPoints, w)
-                        GUI.clear(prev)
-                        prev = []
+  
+
                         #reset for next loop
                 case 1: #right
-                    if int(bow[1]) <= (lengths[validShip] - 1):
+                    if int(bow[1]) <= (10 - lengths[validShip]):
                         for i in range(lengths[validShip]):
                             if (str(int(bow[0])) + str(int(bow[1]) + i)) in boatPoints:
                                 GUI.clear(msg)
                                 msg = GUI.messageBoard("Boat overlap detected, please pick a new spot", w, msg)
                                 validPos = False
-                                
+
                                 break
                                 #this looks stupid but it does manage to skip everything and restart the loop
                     else:
@@ -117,6 +118,7 @@ def boardInit(w):
                         msg = GUI.messageBoard(boat +" outside of game board.", w, msg)
                         validPos = False
                         bow = None
+
 
                     if validPos == True:
                         
@@ -127,8 +129,7 @@ def boardInit(w):
                         bow = None
                         msg = GUI.messageBoard(boat +" placed successfully", w, msg)
                         gears = GUI.boatPlace(gears, boatPoints, w)
-                        GUI.clear(prev)
-                        prev = []
+
                         #reset for next loop
                 case 3: #left
                     if int(bow[1]) >= (lengths[validShip] - 1):
@@ -137,7 +138,7 @@ def boardInit(w):
                                 GUI.clear(msg)
                                 msg = GUI.messageBoard("Boat overlap detected, please pick a new spot", w, msg)
                                 validPos = False
-                                
+
                                 break
                                 #this looks stupid but it does manage to skip everything and restart the loop
                     else:
@@ -145,6 +146,7 @@ def boardInit(w):
                         msg = GUI.messageBoard(boat +" outside of game board", w, msg)
                         validPos = False
                         bow = None
+
                     if validPos == True:
                         
                         for i in range(lengths[validShip]):
@@ -154,28 +156,33 @@ def boardInit(w):
                         bow = None
                         msg = GUI.messageBoard(boat +" placed successfully", w, msg)
                         gears = GUI.boatPlace(gears, boatPoints, w)
-                        GUI.clear(prev)
-                        prev = []
+
+
                         #reset for next loop        
             #print(boatPoints)
+            GUI.clear(prev)
+            prev = []
     for i in range(len(boatPoints)):
             boatMap += boatPoints[i]
     GUI.clear(gears)
     GUI.clear(msg)
-    return(boatMap)
+    return(boatMap, tiles)
 
 def convert(boatMap):
     #put in the opponents boat map to generate the two matricies required to handle game logic 
     #can also be used with your boat map to handle local boat attacks
-    boatBoard = [0,0,0,0,0], [0,0,0,0], [0,0,0], [0,0,0], [0,0]
-    ocean = [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0]
+    boatBoard = [[0,0,0,0,0], [0,0,0,0], [0,0,0], [0,0,0], [0,0]]
+    ocean = [[0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0]]
     k = 0
     for i in range(5):
         #check all 5 boats
         for j in range(len(boatBoard[i])):
             #check each segment of each boat
             boatBoard[i][j] = str((str(boatMap[k]) + str(boatMap[k+1])))
-            k += 2
+            #print(k)
+            #print(boatBoard[i][j])
+            if k <= 30:
+                k += 2
     for i in range(5):
         #check all 5 boats
         for j in range(len(boatBoard[i])):
