@@ -72,10 +72,11 @@ class Client:
     # port = input("Please input the port of the Host: ")
     try:
         
-        cl = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-        self.s, self.addr = cl.connect((ip, port))
-        cl.settimeout(60)
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.s.settimeout(60)
+        server = (ip, port)
+        #print(server)
+        self.s.connect(server)
         #print("Connected to ", self.addr)
     except Exception as e:
        print("An error with the connection has occured. Please check your connection then try again:", e)
