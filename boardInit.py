@@ -161,6 +161,7 @@ def boardInit(w):
     for i in range(len(boatPoints)):
             boatMap += boatPoints[i]
     GUI.clear(gears)
+    GUI.clear(msg)
     return(boatMap)
 
 def convert(boatMap):
