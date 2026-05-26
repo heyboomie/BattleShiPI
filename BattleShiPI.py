@@ -1,5 +1,5 @@
 #main game file
-import boardInit, GUI, localTurn, networkConfig
+import boardInit, GUI, localTurn, networkConfig, time, sys
 
 def setup(): #sets up the game window and server connection
     print("a")
@@ -11,10 +11,12 @@ def setup(): #sets up the game window and server connection
             me = networkConfig.Server()
             ip, port = me.ownName()
             info = GUI.showIP(ip, port, w)
+            print("here")
             me.create()
         elif mode == 1:
             ip, port, info = GUI.inputIP(w)
-            me = networkConfig.Client()
+            me = networkConfig.Client(str(ip), int(port))
+        GUI.clear(info)
     return(me, mode, info, w)
 
 def main():
@@ -35,7 +37,7 @@ def main():
     boatImages = []
     textImages = []
     #gameloop
-    me, mode, info, w = setup()
+    me, mode, w = setup()
     GUI.bckgrDraw(networkShips, w)
     shipString = boardInit.boardInit(w)
     localBoard, localShips = boardInit.convert(shipString)
@@ -45,12 +47,14 @@ def main():
     if mode == 1:
         inc = me.rcTurn()
         hits.append(inc)
-        localBoard, loss = localTurn.AwayTurn(localBoard, localShips, inc)
+        localBoard, loss, msg = localTurn.AwayTurn(localBoard, localShips, inc, w, textImages)
+        textImages = []
+        textImages.append(msg)
         GUI.clear(boatImages)
         boatImages = GUI.boatVitals(localBoard, localShips, w)
 
     while (not won) and (not loss):
-        move, networkBoard, won = localTurn.localTurn(networkBoard, networkShips)
+        move, networkBoard, won = localTurn.localTurn(networkBoard, networkShips, textImages, w)
         me.tmTurn(move)
         fired.append(move)
         GUI.clear(tileImages)
@@ -58,11 +62,23 @@ def main():
 
         inc = me.rcTurn()
         hits.append(inc)
-        localBoard, loss = localTurn.AwayTurn(localBoard, localShips, inc)
+        localBoard, loss, msg = localTurn.AwayTurn(localBoard, localShips, inc, w, textImages)
+        textImages = []
+        textImages.append(msg)
         GUI.clear(boatImages)
         boatImages = GUI.boatVitals(localBoard, localShips, w)
 
     if won == True:
-        
+        GUI.messageBoard("Congratulations Captain, You have defeated the Enemy Navy", w, [])
+    else: 
+        GUI.messageBoard("Sorry Captain, You have been defeated by the Enemy Navy", w, [])
+
+    t = time.time()
+    with open("GameFile" + t + ".txt", "w") as f:
+        f.write(fired, "\n", hits)
+        f.close()
+
+    time.sleep(15)
+    sys.exit(0)   
 
 main()
