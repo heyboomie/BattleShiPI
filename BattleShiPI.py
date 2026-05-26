@@ -36,13 +36,16 @@ def main():
     tileImages = []
     boatImages = []
     textImages = []
+    bckgImages = []
     #gameloop
     me, mode, w = setup()
-    GUI.bckgrDraw(networkShips, w)
+    bckgImages = GUI.bckgrDraw(networkShips, w)
     shipString = boardInit.boardInit(w)
     localBoard, localShips = boardInit.convert(shipString)
     
     networkBoard, networkShips = boardInit.convert(me.tmBoard(shipString))
+    GUI.clear(bckgImages)
+    bckgImages = GUI.bckgrDraw(networkShips, w)
 
     if mode == 1:
         inc = me.rcTurn()
