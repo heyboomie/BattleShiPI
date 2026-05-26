@@ -6,7 +6,7 @@ from time import sleep, time
 
 def screenInit():
 
-    window = "BattleShiPI "
+    window = "BattleShiPI 1.0w22"
     #name the window to the right name
     w = GraphWin(window, 1280, 720)
     #HD screen baby
@@ -115,7 +115,7 @@ def modeSelect(w):
     return(mode)
 
 def showIP(IP, Host, w):
-    return(textFormatLrg("IP :" + IP + " Host: " + Host, 1280/2, 720/2, w))
+    return(textFormatLrg("IP :" + str(IP) + " Port: " + str(Host), 1280/2, 720/2, w))
 
 def inputIP(w):
     boxes = []
@@ -141,11 +141,11 @@ def inputIP(w):
     portEntry.setSize(36)
     portEntry.setTextColor(color_rgb(240,240,240))
     portEntry.setText("Port #")
-    portEntry.draw(W)
+    portEntry.draw(w)
     boxes.append(portEntry)
     
     while True:
-        if w.getKey == "Return"
+        if w.getKey() == "Return":
             return(ipEntry.getText(), portEntry.getText(), boxes)
         
 def boardDraw(map,w):
