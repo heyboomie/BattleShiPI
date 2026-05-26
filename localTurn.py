@@ -1,17 +1,12 @@
-def localTurn(localBoard, boatBoard):
+import GUI
+
+def localTurn(localBoard, boatBoard, prev, w):
 
     #Takes in the current board, and boat coordiantes
     #Outputs the last move, the local board, and if a win is set
 
     #initalize
     validMove = False
-    validLetters = {
-        "a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6, "h":7, "i":8, "j":9
-        }
-    validNum = {
-        "0":0, "1":1, "2":2, "3":3, "4":4, "5":5, "6":6, "7":7, "8":8, "9":9
-    }
-    #look okay, i know its 0-9 not 1-10, but its WAY easier to code this, if i go to a GUI i will go back to 1-10 visually
     boatName = {
         0:"Aircraft Carrier", 1:"Battleship", 2:"Cruiser", 3:"Submarine", 4:"Destroyer"
     }
@@ -20,37 +15,27 @@ def localTurn(localBoard, boatBoard):
     while not validMove:
         #do not progress until the move has been validated
         #A-J is the Y axis, 0-9 is the X axis
-        move = input("Input your move: ") #if i move to a visual approach I will use a click system which will not require this code, but for the MVP this will have to do
-        
-        if len(move) != 2:
-            #check the move is in a valid form to prevent trying to index a part of the string that doesnt exist
-            #also prevents like A33 or whatever
-            print("Please type moves in Letter Number from A-J, 0-9 (ex. B0, J6)")
-        elif (validLetters.get(move[0].lower()) != None) and (validNum.get(move[1]) != None):
-            #make sure each letter is right
-            validMove = True
-        else:
-            print("Please type moves in Letter Number from A-J, 0-9 (ex. B0, J6)")
+        move = GUI.getTile(w)
 
-        if localBoard[validLetters.get(move[0].lower())][validNum.get(move[1])] > 1:
+        if localBoard[str(move)[0]][str(move)[1]] > 1:
             validMove = False
-            print("You have already fired into that zone")
+            prev = [GUI.messageBoard("You have already fired at this location", w, prev)]
             #make sure no duplicate moves
-            #note t future me, standarize the form they get put in, so a6 and A6 arent counted as different
-            #i guess I could also check the tile too thats probalby easier
+        else:
+            validMove = True
+
     coordinate = move[0].upper() + move[1]
     #convert the move into a coordinate that cna be used with the matrix
-    print("!!: ", coordinate)
-    if localBoard[validLetters.get(move[0].lower())][validNum.get(move[1])] == 1:
-        print("hit!")
-        localBoard[validLetters.get(move[0].lower())][validNum.get(move[1])] = 3
+    if localBoard[str(move)[0]][str(move)[1]] == 1:
+        prev = [GUI.messageBoard("Hit!", w, prev)]
+        localBoard[str(move)[0]][str(move)[1]] = 3
         #if theres a boat in the location that was fired upon then change it to a 'hit' tile
     else:
-        print("miss.")
-        localBoard[validLetters.get(move[0].lower())][validNum.get(move[1])] = 2
+        prev = [GUI.messageBoard("Miss!", w, prev)]
+        localBoard[str(move)[0]][str(move)[1]] = 2
         #if theres no boat, then, theres no boat
     # 0 is unknown, 1 is a boat (which would be hidden to the player), 2 is a miss, 3 is a hit, 4 is a destroyed ship
-    print("check", move)
+
 
     for i in range(5):
         #check all 5 boats
@@ -63,7 +48,7 @@ def localTurn(localBoard, boatBoard):
                 #inc damaged segment counter if a segment is damaged
             if k == len(boatBoard[i]):
                 #if all segments in a given boat are destroyed put the message out
-                print("You destroyed your enemies", boatName.get(i))
+                prev = [GUI.messageBoard("You have destroyed the Enemy's " + boatName.get(i), w, prev)]
                 for l in range(len(boatBoard[i])):
                     #again go to each segment of the destroyed boat and turn it into a destroyed tile so its not retriggered
                     localBoard[int(boatBoard[i][l][0])][int(boatBoard[i][l][1])] = 4
@@ -76,25 +61,29 @@ def localTurn(localBoard, boatBoard):
             if localBoard[int(boatBoard[i][j][0])][int(boatBoard[i][j][1])] == 4:
                 k += 1
             if k == 17:
-                print("You win!")
-                return(coordinate, localBoard, True)
+                return(coordinate, localBoard, True, prev)
                 #yay!
-    for i in range(10):
-        print(localBoard[i])
-    #print board for testing purposes
-    return(coordinate, localBoard, False)
+    return(coordinate, localBoard, False, prev)
 
-def AwayTurn(localBoard, boatBoard, inc):
+def AwayTurn(localBoard, boatBoard, inc, w, prev):
     boatName = {
         0:"Aircraft Carrier", 1:"Battleship", 2:"Cruiser", 3:"Submarine", 4:"Destroyer"
     }
+    first = {
+        "0":"A", "1":"B", "2":"C", "3":"D", "4":"E", "5":"F", "6":"G", "7":"H", "8":"I", "9":"J"
+    }
     loss = False
-    if localBoard[str(inc[0])][str(inc[1])] == 1:
-        localBoard[str(inc[0])][str(inc[1])] = 3
-    elif localBoard[str(inc[0])][str(inc[1])] == 0:
-        localBoard[str(inc[0])][str(inc[1])] = 2
+    if localBoard[int(inc[0])][int(inc[1])] == 1:
+        localBoard[int(inc[0])][int(inc[1])] = 3
+        for i in range(len(boatBoard)):
+            for j in range(len(boatBoard[i])):
+                if str(inc) == str(boatBoard[i][j]):
+                    prev = [GUI.messageBoard("The Enemy has fired at " + first.get(str(inc[0])) + str(inc[1]) + " and hit your " + boatName.get(i), w, prev)]
+    elif localBoard[int(inc[0])][int(inc[1])] == 0:
+        localBoard[int(inc[0])][int(inc[1])] = 2
+        prev = [GUI.messageBoard("The Enemy has fired at " + first.get(str(inc[0])) + str(inc[1]) + " and missed!", w, prev)]
     else:
-        print("Error: Mismatched Gamestate, please restart your game")
+        prev = [GUI.messageBoard("Mismatched Gamestate, please restart your game", w, prev)]
 
     for i in range(5):
         #check all 5 boats
@@ -107,7 +96,7 @@ def AwayTurn(localBoard, boatBoard, inc):
                 #inc damaged segment counter if a segment is damaged
             if k == len(boatBoard[i]):
                 #if all segments in a given boat are destroyed put the message out
-                print("Your ", boatName.get(i), " has been destroyed")
+                prev = [GUI.messageBoard("The Enemy has destroyed your " + boatName.get(i), w, prev)]
                 #figure out how to write text to the screen then do that
                 for l in range(len(boatBoard[i])):
                     #again go to each segment of the destroyed boat and turn it into a destroyed tile so its not retriggered
@@ -121,7 +110,6 @@ def AwayTurn(localBoard, boatBoard, inc):
             if localBoard[int(boatBoard[i][j][0])][int(boatBoard[i][j][1])] == 4:
                 k += 1
             if k == 17:
-                print("You win!")
                 loss = True
                 #yay!
-    return(localBoard, loss)
+    return(localBoard, loss, prev)
