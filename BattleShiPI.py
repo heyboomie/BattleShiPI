@@ -25,7 +25,7 @@ def main():
     #print("Game Start")
     #initalize variables
     move = None #where are you shooting
-    inc = None #where are you being shot 
+    inc = "" #where are you being shot 
     localBoard = [] #The board your boats are on
     networkBoard = [] #The board youre shooting at
     localShips = [] #Where your ships are
@@ -53,11 +53,16 @@ def main():
     boatImages = GUI.boatVitals(localShips, localBoard, w)
     #exchange board info with the other player
     networkBoard, networkShips = boardInit.convert(me.tmBoard(shipString))
+    #clear the board
+    GUI.clear(tileImages)
+    #redraw the board with the new marker
+    tileImages = GUI.boardDraw(networkBoard, w)
 
     #if youre a client, do an extra recieve first
     if mode == 1:
         #where am i getting hit?
-        inc = me.rcTurn()
+        while inc == "":
+            inc = me.rcTurn()
         #add that to the log
         hits.append(inc)
         #game logic about getting hit
@@ -69,7 +74,7 @@ def main():
         #clear the ships
         GUI.clear(boatImages)
         #redraw the ships, make any updates if needed
-        boatImages = GUI.boatVitals(localBoard, localShips, w)
+        boatImages = GUI.boatVitals(localShips, localBoard, w)
 
     while (not won) and (not loss): #if the game is neither lost nor won
         #make ur move
@@ -84,7 +89,10 @@ def main():
         tileImages = GUI.boardDraw(networkBoard, w)
 
         #where am i getting hit?
-        inc = me.rcTurn()
+        inc = ""
+        while inc == "":
+            inc = me.rcTurn()
+        print(inc + "!!!")
         #add that to the log
         hits.append(inc)
         #game logic about getting hit
