@@ -270,7 +270,7 @@ def getTile(w):
 def boatPlace(pos, points, w):
     clear(pos)
     lst = []
-    boatX, boatY = 190, 85
+    boatX, boatY = 185, 85
     for i in range(len(points)):
         gear = Image(Point(boatX + 61*int(points[i][1]), boatY + 61*int(points[i][0])), "building.gif")
         gear.draw(w)
