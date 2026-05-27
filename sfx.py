@@ -2,7 +2,8 @@ from playsound3 import playsound
 import os
 
 class sfx:
-
+  '''Create and object from which you can play different sounds, run before changing the directory to anything but the base folder'''
+  
   def __init__(self):
     self.src = os.getcwd() + "/sfx/"
 
