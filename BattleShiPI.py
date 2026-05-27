@@ -1,9 +1,10 @@
 #main game file
-import boardInit, GUI, localTurn, networkConfig, time, sys
+import boardInit, GUI, localTurn, networkConfig, time, sys, sfx
 
 def setup(): #sets up the game window and server connection
     #print("a")
     mode = None
+    sfx = sfx.sfx
     w = GUI.screenInit()
     while mode == None:
         mode = GUI.modeSelect(w)
