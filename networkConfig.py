@@ -103,7 +103,7 @@ class Client:
     self.s.sendall(packet)
 
   def rcTurn(self):
-    incoming = (self.s.recv(1024)).decode()
+    incoming = (self.s.recv(1024).decode())
     return(incoming)
 
 # me = Server()
