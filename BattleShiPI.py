@@ -4,7 +4,7 @@ import boardInit, GUI, localTurn, networkConfig, time, sys, sfx
 def setup(): #sets up the game window and server connection
     #print("a")
     mode = None
-    sfx = sfx.sfx
+    sfx = sfx.sfx()
     w = GUI.screenInit()
     while mode == None:
         mode = GUI.modeSelect(w)
@@ -20,7 +20,7 @@ def setup(): #sets up the game window and server connection
             #print(ip, " ", port)
             me = networkConfig.Client(str(ip), int(port))
         GUI.clear(info)
-    return(me, mode, w)
+    return(me, mode, w, sfx)
 
 def main():
     #print("Game Start")
@@ -41,7 +41,7 @@ def main():
     textImages = []
     bckgImages = []
     #gameloop
-    me, mode, w = setup()
+    me, mode, w, sfx = setup()
     #sets up the game
 
     #draw the background 
