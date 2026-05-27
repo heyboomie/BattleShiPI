@@ -6,7 +6,7 @@ from time import sleep, time
 
 def screenInit():
 
-    window = "BattleShiPI 1.3w22"
+    window = "BattleShiPI 1.4w22"
     #name the window to the right name
     w = GraphWin(window, 1280, 720)
     #HD screen baby
@@ -177,7 +177,7 @@ def boatVitals(boatBoard, localBoard, w):
         #damaged segment counter
         for j in range(len(boatBoard[i])):
             #check each segment of each boat
-            if localBoard[int(boatBoard[i][j][0])][int(boatBoard[i][j][1])] >= 3:
+            if localBoard[int(str(boatBoard[i][j])[0])][int(str(boatBoard[i][j])[1])] >= 3:
                 pre = "d"
             else:
                 pre = ''
