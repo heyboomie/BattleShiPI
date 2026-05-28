@@ -6,7 +6,7 @@ from time import sleep, time
 
 def screenInit():
 
-    window = "BattleShiPI 1.4w22"
+    window = "BattleShiPI 1.5w22"
     #name the window to the right name
     w = GraphWin(window, 1280, 720)
     #HD screen baby
@@ -216,21 +216,21 @@ def bckgrDraw(boatMap, w):
         for j in range(len(boatMap[i])):
             textMap.append(textFormatSml(((Letters.get(int(boatMap[i][j][0]))) + (Nums.get(int(boatMap[i][j][1])))), (boatX + 61*j), (boatY + 91*i - 40), w))
     
-    inc = Rectangle(Point(boatX - 40, boatY + 91*4.75), Point(boatX + 61*4 + 40, boatY + 91*6.25))
+    # inc = Rectangle(Point(boatX - 40, boatY + 91*4.75), Point(boatX + 61*4 + 40, boatY + 91*6.25))
     
-    inc.setFill(difBlue)
-    inc.setOutline(difBlue)
-    inc.draw(w)
-    textMap.append(inc)
-    spot = Rectangle(Point(boatX + 61*2, boatY + 91*5), Point(boatX + 61*4 + 20, boatY + 91*6))
+    # inc.setFill(difBlue)
+    # inc.setOutline(difBlue)
+    # inc.draw(w)
+    # textMap.append(inc)
+    # spot = Rectangle(Point(boatX + 61*2, boatY + 91*5), Point(boatX + 61*4 + 20, boatY + 91*6))
     
-    spot.setFill(color_rgb(30,53,175))
-    spot.setOutline(color_rgb(30,53,175))
-    spot.draw(w)
-    textMap.append(spot)
+    # spot.setFill(color_rgb(30,53,175))
+    # spot.setOutline(color_rgb(30,53,175))
+    # spot.draw(w)
+    # textMap.append(spot)
 
-    textMap.append(textFormatMed("Incoming", boatX + 40, boatY + 91*5 + 20, w))
-    textMap.append(textFormatMed("Shots", boatX + 40, boatY + 91*5 + 65, w))
+    # textMap.append(textFormatMed("Incoming", boatX + 40, boatY + 91*5 + 20, w))
+    # textMap.append(textFormatMed("Shots", boatX + 40, boatY + 91*5 + 65, w))
 
     return(textMap)
 
