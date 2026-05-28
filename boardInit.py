@@ -1,50 +1,8 @@
 
 import GUI, graphics
 
-def boardInit(w, sf):
-    
-    validShip = 0
-    validPos = False
-    boatName = {
-        0:"Aircraft Carrier", 1:"Battleship", 2:"Cruiser", 3:"Submarine", 4:"Destroyer"
-    }
-    
-    #like, i know i used this in other places and i could import it, but this is more self contained also im lazy
-    boatPoints = []
-    boatMap = ''
-    #where there the boats are, it will get turned into a string but for the time being
-    lengths = [5, 4, 3, 3, 2]
-
-    #probably an easier way but whatever
-
-    direction = 0
-    bow = None
-    prev = []
-    msg = []
-    gears = []
-    tiles = GUI.boardDraw([[0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0]], w)
-    while validShip < 5:
-        boat = str(boatName.get(validShip))
-        #do not progress until the positon has been validated
-        while bow == None:
-            bow = GUI.getTile(w)
-            #("bing")
-            if bow != None:
-                prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
-        key = w.checkKey()
-        if key == "Escape":
-            bow = None
-            GUI.clear(prev)
-        if bow != None:
-            #make sure each letter is right
-                validPos = True  
-        if key == "r" and bow != None:
-            direction += 1
-            if direction == 4:
-                direction = 0
-            #print(bow)
-            prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
-        if key == 'Return' and validPos == True:
+def validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf):
+            lengths = [5, 4, 3, 3, 2]
             match(direction):
                 case 0: #up
                     if int(bow[0]) >= (lengths[validShip] - 1):
@@ -159,8 +117,55 @@ def boardInit(w, sf):
                         msg = GUI.messageBoard(boat +" placed successfully", w, msg)
                         sf.build()
                         gears = GUI.boatPlace(gears, boatPoints, w)
+                        
+            return(bow, gear, msg, boatPoints, validShip, validPos)
 
 
+def boardInit(w, sf):
+    
+    validShip = 0
+    validPos = False
+    boatName = {
+        0:"Aircraft Carrier", 1:"Battleship", 2:"Cruiser", 3:"Submarine", 4:"Destroyer"
+    }
+    
+    #like, i know i used this in other places and i could import it, but this is more self contained also im lazy
+    boatPoints = []
+    boatMap = ''
+    #where there the boats are, it will get turned into a string but for the time being
+
+
+    #probably an easier way but whatever
+
+    direction = 0
+    bow = None
+    prev = []
+    msg = []
+    gears = []
+    tiles = GUI.boardDraw([[0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0]], w)
+    while validShip < 5:
+        boat = str(boatName.get(validShip))
+        #do not progress until the positon has been validated
+        while bow == None:
+            bow = GUI.getTile(w)
+            #("bing")
+            if bow != None:
+                prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
+        key = w.checkKey()
+        if key == "Escape":
+            bow = None
+            GUI.clear(prev)
+        if bow != None:
+            #make sure each letter is right
+                validPos = True  
+        if key == "r" and bow != None:
+            direction += 1
+            if direction == 4:
+                direction = 0
+            #print(bow)
+            prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
+        if key == 'Return' and validPos == True:
+            bow, gear, msg, boatPoints, validShip, validPos = validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf)
                         #reset for next loop        
             #print(boatPoints)
             GUI.clear(prev)
