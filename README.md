@@ -12,7 +12,7 @@ $pip install playsound3
 
 When you start the game, you will be prompted to run the game in Host or Client mode. In host mode, your IP and Port on the network will be given so the client is able to connect to you. In client mode you require the IP and Port of the host. Besides some minor ordering things when initializing the game, the role each RPi takes does not matter when playing, the names are more a formality.
 
-When selecting boat positions, RMB to select a tile, Esc to deselect a tile, R to rotate the position of the ship, and Enter to confirm the position.
+When selecting boat positions, RMB to select a tile, Esc to deselect a tile, R to rotate the position of the ship, and Enter to confirm the position. Or if you're feeling lucky, hit space and let random chance choose your boats for you
 
 Once in the game, when prompted (which is when the message box says the enemy has fired somewhere), RMB on a tile to fire there, until all of your boats are destroyed, or you destroy all of theirs.
 
