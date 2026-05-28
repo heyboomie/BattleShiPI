@@ -1,5 +1,5 @@
 
-import GUI, graphics
+import GUI, graphics, random
 
 def validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf):
             lengths = [5, 4, 3, 3, 2]
@@ -121,6 +121,17 @@ def validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf):
             return(bow, gear, msg, boatPoints, validShip, validPos)
 
 
+def feelinLucky(msg, w, sf):
+            validShip = 0
+            boatPoints = []
+            msg = GUI.messageBoard("Picking Boat Position Randomly, Captain", w, msg)
+            while validShip < 5:
+                        bow = str(random.randrang(10)) + str(random.randrange(10))
+                        direction = int(random.rangrange(4))
+                        bow, gear, msg, boatPoints, validShip, validPos = validate(True, boatPoints, validShip, msg, bow, direction, w, sf)
+            return(boatPoints, msg)
+            
+
 def boardInit(w, sf):
     
     validShip = 0
@@ -164,6 +175,9 @@ def boardInit(w, sf):
                 direction = 0
             #print(bow)
             prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
+        if key == "Space" and boatPoints = []:
+                    boatPoints, msg = feelinLucky(msg, w, sf)
+                    break
         if key == 'Return' and validPos == True:
             bow, gear, msg, boatPoints, validShip, validPos = validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf)
                         #reset for next loop        
