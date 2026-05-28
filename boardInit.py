@@ -1,7 +1,7 @@
 
 import GUI, graphics
 
-def boardInit(w):
+def boardInit(w, sf):
     
     validShip = 0
     validPos = False
@@ -53,6 +53,7 @@ def boardInit(w):
                                 GUI.clear(msg)
                                 msg = GUI.messageBoard("Boat overlap detected, please pick a new spot", w, msg)
                                 validPos = False
+                                bow = None
                                 
                                 break
                                     #this looks stupid but it does manage to skip everything and restart the loop
@@ -60,7 +61,6 @@ def boardInit(w):
                         msg = GUI.messageBoard(boat +" outside of game board.", w, msg)
                         validPos = False
                         bow = None
-
 
                     if validPos == True:
                         
@@ -70,6 +70,7 @@ def boardInit(w):
                         validPos = False
                         bow = None
                         msg = GUI.messageBoard(boat +" placed successfully", w, msg)
+                        sf.build()
                         gears = GUI.boatPlace(gears, boatPoints, w)
 
 
@@ -81,11 +82,10 @@ def boardInit(w):
                                 GUI.clear(msg)
                                 msg = GUI.messageBoard("Boat overlap detected, please pick a new spot", w, msg)
                                 validPos = False
-
+                                bow = None
 
                                 #this looks stupid but it does manage to skip everything and restart the loop
                     else:
-                        
                         GUI.clear(msg)
                         msg = GUI.messageBoard(boat +" outside of game board.", w, msg)
                         validPos = False
@@ -99,6 +99,7 @@ def boardInit(w):
                         validPos = False
                         bow = None
                         msg = GUI.messageBoard(boat +" placed successfully", w, msg)
+                        sf.build()
                         gears = GUI.boatPlace(gears, boatPoints, w)
   
 
@@ -110,7 +111,7 @@ def boardInit(w):
                                 GUI.clear(msg)
                                 msg = GUI.messageBoard("Boat overlap detected, please pick a new spot", w, msg)
                                 validPos = False
-
+                                bow = None
                                 break
                                 #this looks stupid but it does manage to skip everything and restart the loop
                     else:
@@ -128,6 +129,7 @@ def boardInit(w):
                         validPos = False
                         bow = None
                         msg = GUI.messageBoard(boat +" placed successfully", w, msg)
+                        sf.build()
                         gears = GUI.boatPlace(gears, boatPoints, w)
 
                         #reset for next loop
@@ -138,7 +140,7 @@ def boardInit(w):
                                 GUI.clear(msg)
                                 msg = GUI.messageBoard("Boat overlap detected, please pick a new spot", w, msg)
                                 validPos = False
-
+                                bow = None
                                 break
                                 #this looks stupid but it does manage to skip everything and restart the loop
                     else:
@@ -155,6 +157,7 @@ def boardInit(w):
                         validPos = False
                         bow = None
                         msg = GUI.messageBoard(boat +" placed successfully", w, msg)
+                        sf.build()
                         gears = GUI.boatPlace(gears, boatPoints, w)
 
 
