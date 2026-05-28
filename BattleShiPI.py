@@ -57,7 +57,7 @@ def setup(sf): #sets up the game window and server connection
         GUI.clear(info)
     return(me, mode, w)
 
-def main():
+def main(re):
     dir = os.path.dirname(os.path.abspath(__file__))
     sf = sfx.sfx()
     #print("Game Start")
@@ -78,7 +78,9 @@ def main():
     textImages = []
     bckgImages = []
     #gameloop
-    me, mode, w = setup(sf)
+    if re == False:
+        me, mode, w = setup(sf)
+    else: 
     #sets up the game
 
     #draw the background 
@@ -116,7 +118,7 @@ def main():
     if mode == 0:
         textImages = GUI.messageBoard("Your First Move, Captain", w, textImages)
 
-    while not loss: #if the game is neither lost nor won
+    while not loss: #if the game is not lost 
         
         #make ur move
         move, networkBoard, won, textImages = localTurn.localTurn(networkBoard, networkShips, textImages, w, sf)
@@ -156,8 +158,23 @@ def main():
 
     
     fileWrite(hits, fired, localShips, networkShips, dir)
-    time.sleep(15)
-    sys.exit(0)   
+    textImages = GUI.messageBoard("Hit enter to play again, hit any other key to quit", textImages, w)
+    again = w.getKey()
+    if again == "Return":
+        GUI.clear(textImages)
+        msg = GUI.messageBoard("Restarting", textImages, w)
+        time.sleep(3)
+        return(True, me, mode, w)
+    else:
+        GUI.clear(textImages)
+        msg = GUI.messageBoard("Quitting", textImages, w)
+        time.sleep(10)
+        sys.exit(0)
 
-
-main()
+re = False
+me = None
+mode = None
+w = None
+while True:
+    
+    re = main(re, me, mode, w)
