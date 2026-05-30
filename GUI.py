@@ -6,13 +6,11 @@ from time import sleep, time
 
 def screenInit():
 
-    window = "BattleShiPI 1.5w22"
+    window = "BattleShiPI 2.1w22"
     #name the window to the right name
     w = GraphWin(window, 1280, 720)
     #HD screen baby
     w.setBackground(color_rgb(30,53,175))
-    folder = os.path.dirname(os.path.abspath(__file__)) + "\img"
-    os.chdir(folder)
     #make sure the images load
 
     return(w)
@@ -259,7 +257,7 @@ def blueprint(bow, dir, l, prev, w):
 def getTile(w):
     tlX = 160
     tlY = 55
-    tl = w.getMouse()
+    tl = w.checkMouse()
     if tl != None:
         if (tl.getX() > tlX) and (tl.getX() < tlX + 610) and (tl.getY() > tlY) and (tl.getY() < tlY + 610):
             tile = (str((tl.getY() - tlY) // 61)[0] + str((tl.getX() - tlX) // 61)[0])
