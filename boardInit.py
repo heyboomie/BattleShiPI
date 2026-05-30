@@ -1,7 +1,13 @@
 
-import GUI, graphics, random
+import GUI, random
+from time import sleep
+from random import random, randrange
 
-def validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf):
+def validate(validPos, boatPoints, validShip, msg, bow, direction, gears, w, sf):
+            boatName = {
+                0:"Aircraft Carrier", 1:"Battleship", 2:"Cruiser", 3:"Submarine", 4:"Destroyer"
+            }
+            boat = str(boatName.get(validShip))
             lengths = [5, 4, 3, 3, 2]
             match(direction):
                 case 0: #up
@@ -12,7 +18,6 @@ def validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf):
                                 msg = GUI.messageBoard("Boat overlap detected, please pick a new spot", w, msg)
                                 validPos = False
                                 bow = None
-                                
                                 break
                                     #this looks stupid but it does manage to skip everything and restart the loop
                     else:
@@ -41,7 +46,7 @@ def validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf):
                                 msg = GUI.messageBoard("Boat overlap detected, please pick a new spot", w, msg)
                                 validPos = False
                                 bow = None
-
+                                break
                                 #this looks stupid but it does manage to skip everything and restart the loop
                     else:
                         GUI.clear(msg)
@@ -118,34 +123,34 @@ def validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf):
                         sf.build()
                         gears = GUI.boatPlace(gears, boatPoints, w)
                         
-            return(bow, gear, msg, boatPoints, validShip, validPos)
-
+            return(bow, gears, msg, boatPoints, validShip, validPos)
 
 def feelinLucky(msg, w, sf):
             validShip = 0
             boatPoints = []
+            gears = []
             msg = GUI.messageBoard("Picking Boat Position Randomly, Captain", w, msg)
+            sleep(2)
             while validShip < 5:
-                        bow = str(random.randrang(10)) + str(random.randrange(10))
-                        direction = int(random.rangrange(4))
-                        bow, gear, msg, boatPoints, validShip, validPos = validate(True, boatPoints, validShip, msg, bow, direction, w, sf)
-            return(boatPoints, msg)
-            
+                        bow = None
+                        bow = str(randrange(10)) + str(randrange(10))
+                        direction = int(randrange(4))
+                        if bow != None:
+                            bow, gears, msg, boatPoints, validShip, ValidPos = validate(True, boatPoints, validShip, msg, bow, direction, gears, w, sf)
+                            sleep(2*random())
+            return(boatPoints, msg, gears)           
 
 def boardInit(w, sf):
     
     validShip = 0
     validPos = False
-    boatName = {
-        0:"Aircraft Carrier", 1:"Battleship", 2:"Cruiser", 3:"Submarine", 4:"Destroyer"
-    }
     
     #like, i know i used this in other places and i could import it, but this is more self contained also im lazy
     boatPoints = []
     boatMap = ''
     #where there the boats are, it will get turned into a string but for the time being
 
-
+    lengths = [5, 4, 3, 3, 2]
     #probably an easier way but whatever
 
     direction = 0
@@ -155,14 +160,15 @@ def boardInit(w, sf):
     gears = []
     tiles = GUI.boardDraw([[0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0], [0,0,0,0,0,0,0,0,0,0]], w)
     while validShip < 5:
-        boat = str(boatName.get(validShip))
+        
         #do not progress until the positon has been validated
         while bow == None:
             bow = GUI.getTile(w)
-            #("bing")
             if bow != None:
                 prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
         key = w.checkKey()
+            #("bing")
+        
         if key == "Escape":
             bow = None
             GUI.clear(prev)
@@ -175,11 +181,13 @@ def boardInit(w, sf):
                 direction = 0
             #print(bow)
             prev = [GUI.blueprint(bow, direction, lengths[validShip], prev, w)]
-        if key == "Space" and boatPoints = []:
-                    boatPoints, msg = feelinLucky(msg, w, sf)
+        if key == "space" and boatPoints == []:
+                    GUI.clear(prev)
+                    prev = []
+                    boatPoints, msg, gears = feelinLucky(msg, w, sf)
                     break
-        if key == 'Return' and validPos == True:
-            bow, gear, msg, boatPoints, validShip, validPos = validate(validPos, boatPoints, validShip, msg, bow, direction, w, sf)
+        if key == 'Return' and validPos == True and bow != None:
+            bow, gears, msg, boatPoints, validShip, validPos = validate(validPos, boatPoints, validShip, msg, bow, direction, gears, w, sf)
                         #reset for next loop        
             #print(boatPoints)
             GUI.clear(prev)
