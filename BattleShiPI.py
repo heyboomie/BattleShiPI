@@ -132,7 +132,7 @@ def main(re, me, mode, w):
     while not loss: #if the game is not lost 
         
         #make ur move
-        move, networkBoard, won, textImages = localTurn.localTurn(localBoard, networkBoard, networkShips, textImages, w, sf)
+        move, networkBoard, won, textImages = localTurn.localTurn(localShips, localBoard, networkBoard, networkShips, textImages, w, sf)
         #send the shell off
         if (me != None):
             me.tmTurn(move)
