@@ -3,8 +3,16 @@ import GUI
 def radar(networkBoard, localBoard, localShips, w, sf):
     inRange = 0
     dmgRange = 0
-    ping = GUI.getTile(w)
-    if localBoard[localShips[0][0][0]][localShips[0][0][1]] < 4: #if the aircraft carrier is still alive
+    ping = None
+    #write the code to draw the radar symbol
+    while ping == None:
+        ping = GUI.getTile(w)
+        if w.checkKey() == "r":
+            ping = None
+            #write the code to draw the cannon symbol
+            break
+    if localBoard[localShips[0][0][0]][localShips[0][0][1]] < 4 and ping != None: #if the aircraft carrier is still alive
+        sf.ping()
         for i in range(3): #3 rows
             for j in range(3): #3 columns
                 if [int(ping[0]) - i - 1] >= 0 and [int(ping[1]) - j - 1] >= 0:
@@ -12,12 +20,15 @@ def radar(networkBoard, localBoard, localShips, w, sf):
                         inRange += 1
                     elif networkBoard[int(ping[0]) - i - 1][int(ping[1]) - j - 1] >= 3:
                         dmgrange += 1
-    elif localBoard[localShips[0][0][0]][localShips[0][0][1]] == 4:
-        ...
+        msg = GUI.messageBoard(str(inRange) + " Active Boats              " + str(dmgRange) + " Destroyed Boats          ", w, prev)
+        return(prev)
+    elif localBoard[localShips[0][0][0]][localShips[0][0][1]] == 4 and ping != None:
+        msg = GUI.messageBoard("Sorry Captain, Your Aircraft Carrier has been destroyed. No recon for us", w, prev)
         #finish this later:D
+        return(prev)
+    return([])
 
-
-def localTurn(localBoard, boatBoard, prev, w, sf):
+def localTurn(myShips, myBoard, localBoard, boatBoard, prev, w, sf):
 
     #Takes in the current board, and boat coordiantes
     #Outputs the last move, the local board, and if a win is set
@@ -37,7 +48,8 @@ def localTurn(localBoard, boatBoard, prev, w, sf):
         #A-J is the Y axis, 0-9 is the X axis
         while move == None:
             move = GUI.getTile(w)
-
+            if w.checkKey() == "r":
+                radar(localBoard, myBoard, myShips, w, sf)
         if localBoard[int(str(move)[0])][int(str(move)[1])] > 1:
             validMove = False
             prev = GUI.messageBoard("You have already fired at this location", w, prev)
