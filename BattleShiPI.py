@@ -68,6 +68,7 @@ def main(re, me, mode, w):
     #print("Game Start")
     #initalize variables
     move = None #where are you shooting
+    rad = False
     inc = "" #where are you being shot 
     localBoard = [] #The board your boats are on
     networkBoard = [] #The board youre shooting at
@@ -132,7 +133,7 @@ def main(re, me, mode, w):
     while not loss: #if the game is not lost 
         
         #make ur move
-        move, networkBoard, won, textImages = localTurn.localTurn(localShips, localBoard, networkBoard, networkShips, textImages, w, sf)
+        rad, move, networkBoard, won, textImages = localTurn.localTurn(rad, localShips, localBoard, networkBoard, networkShips, textImages, w, sf)
         #send the shell off
         if (me != None):
             me.tmTurn(move)
