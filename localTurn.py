@@ -11,7 +11,7 @@ def radar(networkBoard, localBoard, localShips, w, sf):
             ping = None
             #write the code to draw the cannon symbol
             break
-    if localBoard[localShips[0][0][0]][localShips[0][0][1]] < 4 and ping != None: #if the aircraft carrier is still alive
+    if localBoard[localShips[2][0][0]][localShips[2][0][1]] < 4 and ping != None: #if the aircraft carrier is still alive
         sf.ping()
         for i in range(3): #3 rows
             for j in range(3): #3 columns
@@ -23,7 +23,7 @@ def radar(networkBoard, localBoard, localShips, w, sf):
         msg = GUI.messageBoard(str(inRange) + " Active Boats              " + str(dmgRange) + " Destroyed Boats          ", w, prev)
         return(prev, True)
     elif localBoard[localShips[0][0][0]][localShips[0][0][1]] == 4 and ping != None:
-        msg = GUI.messageBoard("Sorry Captain, Your Aircraft Carrier has been destroyed. No recon for us", w, prev)
+        msg = GUI.messageBoard("Sorry Captain, Your Crusier has been destroyed. No recon for us", w, prev)
         #finish this later:D
         return(prev, False)
     return([], False)
