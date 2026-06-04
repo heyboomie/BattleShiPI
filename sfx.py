@@ -34,4 +34,8 @@ class sfx:
   def ping(self):
     playsound(self.src + "ping.wav", block=False)
     #this one is the sound when you select server mode, or enter a host address, sonar ping
+
+  def load(self):
+    playsound(self.src + "load.wav", block=False)
+    #load the cannons
     
