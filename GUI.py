@@ -6,7 +6,7 @@ from time import sleep, time
 
 def screenInit():
 
-    window = "BattleShiPI 2.1w22"
+    window = "BattleShiPI 2.2w22"
     #name the window to the right name
     w = GraphWin(window, 1280, 720)
     #HD screen baby
@@ -274,6 +274,19 @@ def boatPlace(pos, points, w):
         gear.draw(w)
         lst.append(gear)
     return(lst)
+
+def mode(prev, type, w, sf):
+    clear(prev)
+    if type == True:
+        name = "radar.gif"
+        sf.ping()
+    else:
+        name = "load.gif"
+        sf.load()
+    icon = Image(Point(860 + 71, 530 + 46), name)
+    icon.draw(w)
+    return([icon])
+
 # temp test code
 # w = screenInit()
 # boatMap = []
