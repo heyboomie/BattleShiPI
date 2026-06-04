@@ -54,20 +54,29 @@ def setup(sf): #sets up the game window and server connection
             me.create()
         elif mode == 1:
             ip, port, info = GUI.inputIP(w)
-            sf = sfx.sfx()
-            if ip.lower().strip() == "gronk":
-                break
-            #print(ip, " ", port)
-            me = networkConfig.Client(str(ip), int(port))
+            while True:
+ 
+                if ip.lower().strip() == "gronk":
+                    GUI.clear(info)
+                    break
+                #print(ip, " ", port)
+                else:
+                    try:
+                        me = networkConfig.Client(str(ip), int(port))
+                        break
+                    except Exception as e:
+                        print(e)
+                        ip, port, info = GUI.inputIP(w)
     GUI.clear(info)
     return(me, mode, w)
 
-def main(re, me, mode, w):
+def main(re, me, mode, w, sf):
     dir = os.path.dirname(os.path.abspath(__file__))
     sf = sfx.sfx()
     #print("Game Start")
     #initalize variables
     move = None #where are you shooting
+    rad = False
     inc = "" #where are you being shot 
     localBoard = [] #The board your boats are on
     networkBoard = [] #The board youre shooting at
@@ -132,7 +141,7 @@ def main(re, me, mode, w):
     while not loss: #if the game is not lost 
         
         #make ur move
-        move, networkBoard, won, textImages = localTurn.localTurn(networkBoard, networkShips, textImages, w, sf)
+        rad, move, networkBoard, won, textImages = localTurn.localTurn(rad, localShips, localBoard, networkBoard, networkShips, textImages, w, sf)
         #send the shell off
         if (me != None):
             me.tmTurn(move)
