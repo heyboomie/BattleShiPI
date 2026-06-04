@@ -1,6 +1,6 @@
 import GUI
 
-def radar(networkBoard, localBoard, localShips, w, sf):
+def radar(prev, networkBoard, localBoard, localShips, w, sf):
     inRange = 0
     dmgRange = 0
     ping = None
@@ -49,7 +49,7 @@ def localTurn(rad, myShips, myBoard, localBoard, boatBoard, prev, w, sf):
         while move == None:
             move = GUI.getTile(w)
             if w.checkKey() == "r" and rad == False:
-                prev, rad = radar(localBoard, myBoard, myShips, w, sf)
+                prev, rad = radar(prev, localBoard, myBoard, myShips, w, sf)
                 
         if localBoard[int(str(move)[0])][int(str(move)[1])] > 1:
             validMove = False
