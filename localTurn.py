@@ -1,31 +1,35 @@
 import GUI
 
-def radar(prev, networkBoard, localBoard, localShips, w, sf):
+def radar(icon, prev, networkBoard, localBoard, localShips, w, sf):
+    first = {
+        "0":"A", "1":"B", "2":"C", "3":"D", "4":"E", "5":"F", "6":"G", "7":"H", "8":"I", "9":"J"
+    }
     inRange = 0
     dmgRange = 0
     ping = None
-    #write the code to draw the radar symbol
+    icon = GUI.mode(icon, True, w, sf)
     while ping == None:
         ping = GUI.getTile(w)
         if w.checkKey() == "r":
             ping = None
-            #write the code to draw the cannon symbol
+            icon = GUI.mode(icon, False, w, sf)
             break
-    if localBoard[localShips[2][0][0]][localShips[2][0][1]] < 4 and ping != None: #if the aircraft carrier is still alive
-        sf.ping()
+    tile = first.get(str(ping[0])) + str(int(ping[1]) + 1)
+    if localBoard[int(localShips[2][0][0])][int(localShips[2][0][1])] < 4 and ping != None: #if the radar ship is still alive
         for i in range(3): #3 rows
             for j in range(3): #3 columns
-                if [int(ping[0]) - i - 1] >= 0 and [int(ping[1]) - j - 1] >= 0:
-                    if networkBoard[int(ping[0]) - i - 1][int(ping[1]) - j - 1] == 1:
+                if (int(ping[0]) + i - 1) >= 0 and (int(ping[1]) + j - 1) >= 0:
+                    if networkBoard[int(ping[0]) + i - 1][int(ping[1]) + j - 1] == 1:
                         inRange += 1
-                    elif networkBoard[int(ping[0]) - i - 1][int(ping[1]) - j - 1] >= 3:
-                        dmgrange += 1
-        msg = GUI.messageBoard(str(inRange) + " Active Boats              " + str(dmgRange) + " Destroyed Boats          ", w, prev)
+                    elif networkBoard[int(ping[0]) + i - 1][int(ping[1]) + j - 1] >= 3:
+                        dmgRange += 1
+        msg = GUI.messageBoard(str(inRange) + " Active Boats, " + str(dmgRange) + " Destroyed Boats in a 3x3 area around: "+ tile, w, prev)
+        icon = GUI.mode(icon, False, w, sf)
         return(prev, True)
-    elif localBoard[localShips[0][0][0]][localShips[0][0][1]] == 4 and ping != None:
-        msg = GUI.messageBoard("Sorry Captain, Your Crusier has been destroyed. No recon for us", w, prev)
+    elif localBoard[int(localShips[2][2][0])][int(localShips[2][2][1])] >= 3 and ping != None:
+        msg = GUI.messageBoard("Sorry Captain, Your Radar has been destroyed. No recon for us", w, prev)
         #finish this later:D
-        return(prev, False)
+        return(msg, False)
     return([], False)
 
 def localTurn(rad, myShips, myBoard, localBoard, boatBoard, prev, w, sf):
@@ -35,7 +39,7 @@ def localTurn(rad, myShips, myBoard, localBoard, boatBoard, prev, w, sf):
 
     #initalize
     validMove = False
-    prev = []
+    icon = GUI.mode([], False, w, sf)
     # prev = GUI.messageBoard("Your Turn, Captain", w, prev)
     boatName = {
         0:"Aircraft Carrier", 1:"Battleship", 2:"Cruiser", 3:"Submarine", 4:"Destroyer"
@@ -49,7 +53,7 @@ def localTurn(rad, myShips, myBoard, localBoard, boatBoard, prev, w, sf):
         while move == None:
             move = GUI.getTile(w)
             if w.checkKey() == "r" and rad == False:
-                prev, rad = radar(prev, localBoard, myBoard, myShips, w, sf)
+                prev, rad = radar(icon, prev, localBoard, myBoard, myShips, w, sf)
                 
         if localBoard[int(str(move)[0])][int(str(move)[1])] > 1:
             validMove = False
