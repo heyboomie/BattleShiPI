@@ -1,4 +1,4 @@
-import socket, os, subprocess, sys, GUI
+import socket, sys
 from random import randint
 
 
@@ -80,6 +80,7 @@ class Client:
         #print("Connected to ", self.addr)
     except Exception as e:
        print("An error with the connection has occured. Please check your connection then try again:", e)
+       
        sys.exit(0)
     
     #then open the server and make the conncetion 
