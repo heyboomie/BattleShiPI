@@ -7,10 +7,7 @@ The classic Battleship game intended to run between two Raspberry Pis on the sam
 A connection to the internet is required as should be clear since it transmits data over TCP. There is a 60 second time out, just be aware of that.
 To run the game, download every file in this repo and save them all in the same folder. Then, simply running “BattleShiPI.py” will properly execute the whole program (Python >= 3.10 Required).
 
-This project also includes sound files, for these you will need to run:
-$pip install playsound3
-
-When you start the game, you will be prompted to run the game in Host or Client mode. In host mode, your IP and Port on the network will be given so the client is able to connect to you. In client mode you require the IP and Port of the host. Besides some minor ordering things when initializing the game, the role each RPi takes does not matter when playing, the names are more a formality. If a bad connection is detected the game will cleanly terminate. It is recommend to run the main file from a IDE of some kind so error messages can be read, althougn not strictly neccisary.
+When you start the game, you will be prompted to run the game in Host or Client mode. In host mode, your IP and Port on the network will be given so the client is able to connect to you. In client mode you require the IP and Port of the host. Besides some minor ordering things when initializing the game, the role each RPi takes does not matter when playing, the names are more a formality. If a bad connection is detected the game will cleanly terminate. It is recommend to run the main file from a IDE of some kind so error messages can be read, although not strictly necessary.
 
 If in Client mode, the IP is entered as "gronk" this will change it to a PvAI mode where you will battle the built in AI Captain
 
