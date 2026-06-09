@@ -6,7 +6,7 @@ from time import sleep, time
 
 def screenInit():
 
-    window = "BattleShiPI 2.2w23"
+    window = "BattleShiPI 2.3w24"
     #name the window to the right name
     w = GraphWin(window, 1280, 720)
     #HD screen baby
