@@ -100,7 +100,7 @@ def localTurn(rad, myShips, myBoard, localBoard, boatBoard, prev, w, sf):
                 k += 1
             if k == 17:
                 GUI.clear(prev)
-                return(move, localBoard, True, prev)
+                return(rad, move, localBoard, True, prev)
                 #yay!
     return(rad, move, localBoard, False, prev)
 
