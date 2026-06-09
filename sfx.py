@@ -1,4 +1,4 @@
-from playsound3 import playsound
+from ps3 import playsound
 import os
 
 class sfx:
