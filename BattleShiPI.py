@@ -1,5 +1,5 @@
 #main game file
-import boardInit, GUI, localTurn, networkConfig, sfx, os, gronk
+import boardInit, GUI, localTurn, networkConfig, sfx, os, gronk, platform
 from sys import exit
 from time import sleep, time
 from random import random
@@ -204,6 +204,9 @@ mode = None
 w = None
 sf = None
 while True:
-    folder = os.path.dirname(os.path.abspath(__file__)) + "\img"
+    if platform.system() == "Windows":
+        folder = os.path.dirname(os.path.abspath(__file__)) + "\img"
+    else:
+        folder = os.path.dirname(os.path.abspath(__file__)) + "/img" 
     os.chdir(folder)
     re, me, mode, w, sf = main(re, me, mode, w, sf)
