@@ -13,7 +13,7 @@ def radar(icon, prev, networkBoard, localBoard, localShips, w, sf):
         if w.checkKey() == "r":
             ping = None
             icon = GUI.mode(icon, False, w, sf)
-            break
+            return(prev, False)
     tile = first.get(str(ping[0])) + str(int(ping[1]) + 1)
     if localBoard[int(localShips[2][0][0])][int(localShips[2][0][1])] < 4 and ping != None: #if the radar ship is still alive
         for i in range(3): #3 rows
@@ -23,7 +23,7 @@ def radar(icon, prev, networkBoard, localBoard, localShips, w, sf):
                         inRange += 1
                     elif networkBoard[int(ping[0]) + i - 1][int(ping[1]) + j - 1] >= 3:
                         dmgRange += 1
-        msg = GUI.messageBoard(str(inRange) + " Active Boats, " + str(dmgRange) + " Destroyed Boats in a 3x3 area around: "+ tile, w, prev)
+        prev = GUI.messageBoard(str(inRange) + " Active Boats, " + str(dmgRange) + " Destroyed Boats in a 3x3 area around: "+ tile, w, prev)
         icon = GUI.mode(icon, False, w, sf)
         return(prev, True)
     elif localBoard[int(localShips[2][2][0])][int(localShips[2][2][1])] >= 3 and ping != None:
